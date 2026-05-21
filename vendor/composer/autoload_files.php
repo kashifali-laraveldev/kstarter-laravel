@@ -41,4 +41,8 @@ return array(
     'ce9671a430e4846b44e1c68c7611f9f5' => $vendorDir . '/mockery/mockery/library/Mockery.php',
     'a1cfe24d14977df6878b9bf804af2d1c' => $vendorDir . '/nunomaduro/collision/src/Adapters/Phpunit/Autoload.php',
     'ec07570ca5a812141189b1fa81503674' => $vendorDir . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
+    '8fde5feda9697fe0ee53a3938c839fb0' => $baseDir . '/app/Helpers/Helper.php',
+    '8c713f660683d4f2a152305042253651' => $baseDir . '/app/Helpers/Constant.php',
+    '24e1839f2ac506d83cbf14052454870c' => $baseDir . '/app/Helpers/Response.php',
+    'e3c1476fcae308d53560380373688014' => $baseDir . '/app/Helpers/FlashMessage.php',
 );
