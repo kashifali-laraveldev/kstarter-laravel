@@ -10,7 +10,7 @@
     <meta name="description" content="" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset('images/favicon/favicon.ico') }}" />
+    <link rel="icon" type="image/svg+xml" href="{{ asset('admin_assets/img/favicon/favicon.svg') }}" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

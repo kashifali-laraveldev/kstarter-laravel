@@ -19,14 +19,4 @@ class AdminUsersController extends Controller
     {
         return $this->adminUsersService->index($request);
     }
-
-    public function create(Request $request)
-    {
-        return $this->adminUsersService->create($request);
-    }
-
-    public function edit(Request $request, $id)
-    {
-        return $this->adminUsersService->edit($request, $id);
-    }
 }

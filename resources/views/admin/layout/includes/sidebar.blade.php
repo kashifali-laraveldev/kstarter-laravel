@@ -3,9 +3,11 @@
     <div class="app-brand demo">
         <a href="{{ url('admin/dashboard') }}" class="app-brand-link">
             <span class="app-brand-logo demo">
-                <span style="background:linear-gradient(135deg,#6366f1,#4f46e5);color:#fff;font-weight:700;font-size:18px;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;">K</span>
+                <span class="ks-logo-icon">K</span>
             </span>
-            <span class="app-brand-text demo menu-text ms-2"><strong style="font-size:1.1em;">KS</strong><span style="font-size:0.75em;font-weight:400;">tarter</span></span>
+            <span class="app-brand-text demo menu-text ms-2 ks-logo-text">
+                <span class="ks-logo-bold">KS</span><span class="ks-logo-light">tarter</span>
+            </span>
         </a>
 
         <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">

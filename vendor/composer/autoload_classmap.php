@@ -21,8 +21,6 @@ return array(
     'App\\Libraries\\Admin\\Acl\\Permissions\\AdminPermissionsIndexLibrary' => $baseDir . '/app/Libraries/Admin/Acl/Permissions/AdminPermissionsIndexLibrary.php',
     'App\\Libraries\\Admin\\Acl\\Roles\\AdminRolesCreateLibrary' => $baseDir . '/app/Libraries/Admin/Acl/Roles/AdminRolesCreateLibrary.php',
     'App\\Libraries\\Admin\\Acl\\Roles\\AdminRolesIndexLibrary' => $baseDir . '/app/Libraries/Admin/Acl/Roles/AdminRolesIndexLibrary.php',
-    'App\\Libraries\\Admin\\Acl\\Users\\AdminUsersCreateLibrary' => $baseDir . '/app/Libraries/Admin/Acl/Users/AdminUsersCreateLibrary.php',
-    'App\\Libraries\\Admin\\Acl\\Users\\AdminUsersEditLibrary' => $baseDir . '/app/Libraries/Admin/Acl/Users/AdminUsersEditLibrary.php',
     'App\\Libraries\\Admin\\Acl\\Users\\AdminUsersIndexLibrary' => $baseDir . '/app/Libraries/Admin/Acl/Users/AdminUsersIndexLibrary.php',
     'App\\Libraries\\Admin\\Auth\\Login\\AdminLoginViewLibrary' => $baseDir . '/app/Libraries/Admin/Auth/Login/AdminLoginViewLibrary.php',
     'App\\Libraries\\Admin\\Dashboard\\AdminDashboardLibrary' => $baseDir . '/app/Libraries/Admin/Dashboard/AdminDashboardLibrary.php',

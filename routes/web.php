@@ -18,8 +18,6 @@ Route::get('admin/login', [AdminLoginController::class, 'loginView'])->name('adm
 Route::get('admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
 Route::get('admin/users', [AdminUsersController::class, 'index'])->name('admin.users');
-Route::get('admin/users/create', [AdminUsersController::class, 'create'])->name('admin.users.create');
-Route::get('admin/users/{id}/edit', [AdminUsersController::class, 'edit'])->name('admin.users.edit');
 
 Route::get('admin/roles', [AdminRolesController::class, 'index'])->name('admin.roles');
 Route::get('admin/roles/create', [AdminRolesController::class, 'create'])->name('admin.roles.create');
