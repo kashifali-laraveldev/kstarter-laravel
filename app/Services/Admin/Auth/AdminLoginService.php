@@ -2,7 +2,7 @@
 
 namespace App\Services\Admin\Auth;
 
-use App\Libraries\Admin\Auth\AdminLoginViewLibrary;
+use App\Libraries\Admin\Auth\Login\AdminLoginViewLibrary;
 use Illuminate\Http\Request;
 
 class AdminLoginService

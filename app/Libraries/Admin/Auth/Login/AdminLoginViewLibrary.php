@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Libraries\Admin\Auth;
+namespace App\Libraries\Admin\Auth\Login;
 
 use Illuminate\Http\Request;
 
@@ -13,4 +13,5 @@ class AdminLoginViewLibrary
         $data = [];
         return view('admin.auth.index')->with($data);
     }
+
 }

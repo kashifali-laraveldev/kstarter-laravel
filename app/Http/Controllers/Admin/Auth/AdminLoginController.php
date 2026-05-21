@@ -18,4 +18,5 @@ class AdminLoginController extends Controller
     {
         return $this->adminLoginService->loginView($request);
     }
+
 }

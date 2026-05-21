@@ -1,1 +1,1 @@
-<h1>Welcome To Home Page</h1>
+@extends('front.layout.front_master')
