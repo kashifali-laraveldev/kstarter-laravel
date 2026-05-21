@@ -4,7 +4,7 @@ namespace App\Libraries\Admin\Acl\Permissions;
 
 use Illuminate\Http\Request;
 
-class AdminPermissionsLibrary
+class AdminPermissionsIndexLibrary
 {
     public function __construct() {}
 

@@ -4,7 +4,7 @@ namespace App\Libraries\Admin\Acl\PermissionCategories;
 
 use Illuminate\Http\Request;
 
-class AdminPermissionCategoriesLibrary
+class AdminPermissionCategoriesIndexLibrary
 {
     public function __construct() {}
 

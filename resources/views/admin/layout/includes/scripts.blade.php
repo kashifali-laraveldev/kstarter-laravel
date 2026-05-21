@@ -10,5 +10,6 @@
 
 <!-- Main JS -->
 <script src="{{ asset('admin_assets') }}/js/main.js"></script>
+<script src="{{ asset('admin_assets') }}/js/custom.js"></script>
 
 @yield('script')

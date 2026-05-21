@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 class AdminRolesController extends Controller
 {
     protected AdminRolesService $adminRolesService;
+
     public function __construct()
     {
         $this->adminRolesService = new AdminRolesService();
@@ -17,5 +18,10 @@ class AdminRolesController extends Controller
     public function index(Request $request)
     {
         return $this->adminRolesService->index($request);
+    }
+
+    public function create(Request $request)
+    {
+        return $this->adminRolesService->create($request);
     }
 }

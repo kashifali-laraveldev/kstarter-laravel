@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 class AdminPermissionCategoriesController extends Controller
 {
     protected AdminPermissionCategoriesService $adminPermissionCategoriesService;
+
     public function __construct()
     {
         $this->adminPermissionCategoriesService = new AdminPermissionCategoriesService();
@@ -17,5 +18,10 @@ class AdminPermissionCategoriesController extends Controller
     public function index(Request $request)
     {
         return $this->adminPermissionCategoriesService->index($request);
+    }
+
+    public function create(Request $request)
+    {
+        return $this->adminPermissionCategoriesService->create($request);
     }
 }

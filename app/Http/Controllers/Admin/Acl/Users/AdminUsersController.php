@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 class AdminUsersController extends Controller
 {
     protected AdminUsersService $adminUsersService;
+
     public function __construct()
     {
         $this->adminUsersService = new AdminUsersService();
@@ -17,5 +18,15 @@ class AdminUsersController extends Controller
     public function index(Request $request)
     {
         return $this->adminUsersService->index($request);
+    }
+
+    public function create(Request $request)
+    {
+        return $this->adminUsersService->create($request);
+    }
+
+    public function edit(Request $request, $id)
+    {
+        return $this->adminUsersService->edit($request, $id);
     }
 }

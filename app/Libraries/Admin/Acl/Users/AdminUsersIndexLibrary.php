@@ -4,7 +4,7 @@ namespace App\Libraries\Admin\Acl\Users;
 
 use Illuminate\Http\Request;
 
-class AdminUsersLibrary
+class AdminUsersIndexLibrary
 {
     public function __construct() {}
 

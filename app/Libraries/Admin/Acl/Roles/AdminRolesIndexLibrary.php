@@ -4,7 +4,7 @@ namespace App\Libraries\Admin\Acl\Roles;
 
 use Illuminate\Http\Request;
 
-class AdminRolesLibrary
+class AdminRolesIndexLibrary
 {
     public function __construct() {}
 
