@@ -1,16 +1,21 @@
-@extends('admin.layout.admin_master')
-@section('title', 'Users | KStarter')
+﻿@extends('admin.layout.admin_master')
+@section('title', 'KStarter | Users')
 
 @section('content')
 
-    <div class="py-3 mb-4">
-        <h4 class="fw-bold mb-1">Manage Users</h4>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb breadcrumb-style1 mb-0" style="--bs-breadcrumb-divider: '•';">
-                <li class="breadcrumb-item"><a href="{{ url('admin/dashboard') }}">Dashboard</a></li>
-                <li class="breadcrumb-item active">Manage Users</li>
-            </ol>
-        </nav>
+    <div class="py-3 mb-4 d-flex justify-content-between align-items-center">
+        <div>
+            <h4 class="fw-bold mb-1">Manage Users</h4>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb breadcrumb-style1 mb-0" style="--bs-breadcrumb-divider: '•';">
+                    <li class="breadcrumb-item"><a href="{{ url('admin/dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Manage Users</li>
+                </ol>
+            </nav>
+        </div>
+        <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#addUserDrawer">
+            <i class="bx bx-plus me-1"></i> Add User
+        </button>
     </div>
 
     <div class="card">
@@ -20,9 +25,6 @@
             <div class="d-flex gap-2">
                 <button id="exportExcelBtn" class="btn btn-outline-success">
                     <i class="bx bx-export me-1"></i> Export Excel
-                </button>
-                <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#addUserDrawer">
-                    <i class="bx bx-plus me-1"></i> Add User
                 </button>
             </div>
         </div>

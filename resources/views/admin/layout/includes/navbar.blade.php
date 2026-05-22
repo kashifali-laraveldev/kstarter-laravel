@@ -10,7 +10,16 @@
     </div>
 
     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-        <div class="navbar-nav align-items-center"></div>
+        <div class="navbar-nav align-items-center">
+            <div class="ks-navbar-tagline d-none d-md-flex align-items-center gap-2">
+                <span class="ks-navbar-badge">
+                    <i class="bx bx-rocket"></i> KStarter Laravel
+                </span>
+                <span class="ks-navbar-text">
+                    Skip the boilerplate. <span class="ks-navbar-highlight">Auth, roles & permissions</span> — already built, just ship your product.
+                </span>
+            </div>
+        </div>
 
         <ul class="navbar-nav flex-row align-items-center ms-auto">
             <!-- User -->
