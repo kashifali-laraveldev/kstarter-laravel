@@ -3,8 +3,9 @@
     <div class="navbar-inner">
         <!-- Logo -->
         <a href="{{ route('front.home') }}" class="kstarter-logo">
-            <div class="logo-icon">K</div>
-            <span class="logo-text">KStarter Laravel</span>
+            <div class="logo-icon">
+                <img src="{{ asset('common_assets') }}/images/logo.png" class="web-logo-img" alt="KStarter Laravel">
+            </div>
         </a>
 
         <!-- Nav Links -->

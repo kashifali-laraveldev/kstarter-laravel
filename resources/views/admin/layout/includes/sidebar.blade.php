@@ -3,10 +3,7 @@
     <div class="app-brand demo">
         <a href="{{ url('admin/dashboard') }}" class="app-brand-link">
             <span class="app-brand-logo demo">
-                <span class="ks-logo-icon">K</span>
-            </span>
-            <span class="app-brand-text demo menu-text ms-2 ks-logo-text">
-                <span class="ks-logo-bold">KS</span><span class="ks-logo-light">tarter</span>
+                <img src="{{ asset('common_assets') }}/images/logo.png" class="web-logo-img" alt="KStarter Laravel">
             </span>
         </a>
 
@@ -34,7 +31,8 @@
             $usersActive = request()->is('admin/users') || request()->is('admin/users/*');
             $rolesActive = request()->is('admin/roles') || request()->is('admin/roles/*');
             $permissionsActive = request()->is('admin/permissions') || request()->is('admin/permissions/*');
-            $permCatActive = request()->is('admin/permission-categories') || request()->is('admin/permission-categories/*');
+            $permCatActive =
+                request()->is('admin/permission-categories') || request()->is('admin/permission-categories/*');
         @endphp
 
         <!-- Users -->

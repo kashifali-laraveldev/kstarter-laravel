@@ -17,5 +17,7 @@
     <!--  Styling -->
     <link href="{{ asset('front_assets') }}/css/style.css" rel="stylesheet" />
 
+    <link href="{{ asset('front_assets') }}/css/ks_custom.css" rel="stylesheet" />
+
     @yield('css')
 </head>
