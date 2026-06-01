@@ -1,5 +1,5 @@
 <!-- ═══════════════════════ FEATURES ═══════════════════════ -->
-<section class="features-section">
+<section id="features" class="features-section">
     <div class="features-inner">
         <div class="row g-4">
 
@@ -10,8 +10,8 @@
                         <i class="bi bi-shield-check"></i>
                     </div>
                     <div class="feature-title">Authentication</div>
-                    <p class="feature-desc">Secure authentication system with login, register, email verification
-                        &amp; more.</p>
+                    <p class="feature-desc">Custom admin authentication with guard-based protection, secure login,
+                        and session management — no third-party packages required.</p>
                 </div>
             </div>
 
@@ -19,34 +19,35 @@
             <div class="col-lg-4 col-md-6">
                 <div class="feature-card">
                     <div class="feature-icon-wrap">
-                        <i class="bi bi-people"></i>
+                        <i class="bi bi-lock"></i>
                     </div>
                     <div class="feature-title">Role &amp; Permission</div>
-                    <p class="feature-desc">Powerful role and permission management using Spatie Laravel
-                        Permission.</p>
+                    <p class="feature-desc">Custom-built RBAC with route-level permission checks, multiple roles
+                        per user, and a fully manageable permission category tree.</p>
                 </div>
             </div>
 
-            <!-- Settings Module -->
+            <!-- User Management -->
             <div class="col-lg-4 col-md-6">
                 <div class="feature-card">
                     <div class="feature-icon-wrap">
-                        <i class="bi bi-gear"></i>
+                        <i class="bi bi-people"></i>
                     </div>
-                    <div class="feature-title">Settings Module</div>
-                    <p class="feature-desc">Dynamic settings module to manage your application configurations
-                        easily.</p>
+                    <div class="feature-title">User Management</div>
+                    <p class="feature-desc">Full CRUD for users with multiple role assignments, status toggling,
+                        and profile management — all powered by AJAX drawers.</p>
                 </div>
             </div>
 
-            <!-- CRUD Generator -->
+            <!-- Admin Panel -->
             <div class="col-lg-4 col-md-6">
                 <div class="feature-card">
                     <div class="feature-icon-wrap">
-                        <i class="bi bi-database"></i>
+                        <i class="bi bi-speedometer2"></i>
                     </div>
-                    <div class="feature-title">CRUD Generator</div>
-                    <p class="feature-desc">Generate CRUD operations in seconds and focus on building features.</p>
+                    <div class="feature-title">Admin Panel</div>
+                    <p class="feature-desc">Sneat Bootstrap 5 admin theme with DataTables, Excel export, AJAX
+                        offcanvas drawers, Select2, and SweetAlert2 — production-ready UI out of the box.</p>
                 </div>
             </div>
 
@@ -57,7 +58,8 @@
                         <i class="bi bi-code-slash"></i>
                     </div>
                     <div class="feature-title">Developer Friendly</div>
-                    <p class="feature-desc">Clean code structure, PSR-4 standards, and easy to customize.</p>
+                    <p class="feature-desc">Clean Controller &rarr; Service &rarr; Library architecture, PSR-4
+                        standards, and a structured codebase that scales with your project.</p>
                 </div>
             </div>
 
@@ -69,7 +71,7 @@
                     </div>
                     <div class="feature-title">Modern Stack</div>
                     <p class="feature-desc">Built with Laravel 11, PHP 8.2+, Bootstrap 5, Vite &amp; modern best
-                        practices.</p>
+                        practices — ready for your next production project.</p>
                 </div>
             </div>
 

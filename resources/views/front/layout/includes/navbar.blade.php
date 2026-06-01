@@ -10,11 +10,9 @@
 
         <!-- Nav Links -->
         <ul class="kstarter-nav-links">
-            <li><a href="#" class="active">Home</a></li>
-            <li><a href="#">Features</a></li>
-            <li><a href="#">Docs</a></li>
-            <li><a href="#">Changelog</a></li>
-            <li><a href="#">Support</a></li>
+            <li><a href="{{ route('front.home') }}" class="active">Home</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#support">Support</a></li>
         </ul>
 
         <!-- Action Buttons -->

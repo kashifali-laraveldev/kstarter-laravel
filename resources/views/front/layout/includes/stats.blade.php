@@ -1,5 +1,5 @@
 <!-- ═══════════════════════ STATS BANNER ═══════════════════════ -->
-<section class="stats-section">
+<section id="support" class="stats-section">
     <div class="stats-inner">
 
         <div class="stat-item">

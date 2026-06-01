@@ -1,5 +1,5 @@
 <!-- ═══════════════════════ HERO ═══════════════════════ -->
-<section class="hero-section">
+<section id="hero" class="hero-section">
     <div class="hero-inner">
 
         <!-- Left: Content -->
@@ -20,13 +20,13 @@
             </p>
 
             <div class="hero-buttons">
-                <a href="#" class="btn-primary-hero">
-                    <i class="bi bi-download"></i>
-                    Download for Free
+                <a href="#features" class="btn-primary-hero">
+                    <i class="bi bi-grid-1x2"></i>
+                    Explore Features
                 </a>
-                <a href="#" class="btn-outline-hero">
-                    <i class="bi bi-book"></i>
-                    Read Documentation
+                <a href="{{ route('admin.login.view') }}" class="btn-outline-hero">
+                    <i class="bi bi-speedometer2"></i>
+                    Live Demo
                 </a>
             </div>
 
@@ -86,27 +86,27 @@
                     <div class="feature-list-dark">
                         <div class="feature-item-dark">
                             <i class="bi bi-check-circle-fill"></i>
-                            Authentication
+                            Custom Authentication
                         </div>
                         <div class="feature-item-dark">
                             <i class="bi bi-check-circle-fill"></i>
-                            Role &amp; Permission (Spatie)
+                            Role &amp; Permission (Custom RBAC)
                         </div>
                         <div class="feature-item-dark">
                             <i class="bi bi-check-circle-fill"></i>
-                            Settings Module
+                            User Management
                         </div>
                         <div class="feature-item-dark">
                             <i class="bi bi-check-circle-fill"></i>
-                            CRUD Generator
+                            Admin Panel (Sneat Theme)
                         </div>
                         <div class="feature-item-dark">
                             <i class="bi bi-check-circle-fill"></i>
-                            API Support
+                            DataTables &amp; Excel Export
                         </div>
                         <div class="feature-item-dark">
                             <i class="bi bi-check-circle-fill"></i>
-                            Clean &amp; Developer Friendly
+                            Clean Architecture
                         </div>
                         <div class="feature-item-dark">
                             <i class="bi bi-check-circle-fill"></i>

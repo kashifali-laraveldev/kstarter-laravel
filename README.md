@@ -1,60 +1,177 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <img src="public/front_assets/images/favicon/favicon.svg" width="72" alt="KStarter Laravel" />
 </p>
 
-## About Laravel
+<h1 align="center">KStarter Laravel</h1>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+<p align="center">
+  A modern, production-ready Laravel 11 admin starter kit with custom authentication,<br>
+  role-based access control, user management, and a polished Sneat Bootstrap 5 admin panel.
+</p>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+<p align="center">
+  <img src="https://img.shields.io/badge/Laravel-11-red?logo=laravel&logoColor=white" alt="Laravel 11" />
+  <img src="https://img.shields.io/badge/PHP-8.2+-777BB4?logo=php&logoColor=white" alt="PHP 8.2+" />
+  <img src="https://img.shields.io/badge/Bootstrap-5-7952B3?logo=bootstrap&logoColor=white" alt="Bootstrap 5" />
+  <img src="https://img.shields.io/badge/License-MIT-green" alt="MIT License" />
+</p>
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## Features
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+| Feature | Description |
+|---|---|
+| **Custom Authentication** | Guard-based admin login with remember me, session management, and middleware protection — no Breeze or Jetstream |
+| **Role & Permission (RBAC)** | Fully custom-built role-based access control with route-level permission checks, permission categories, and multiple roles per user |
+| **User Management** | Complete CRUD with multiple role assignments, status toggling, profile management — all via AJAX offcanvas drawers |
+| **Admin Panel** | Sneat Bootstrap 5 theme with DataTables, Excel export, Select2, SweetAlert2, and a responsive sidebar |
+| **Clean Architecture** | Structured `Controller → Service → Library` pattern for separation of concerns and scalability |
+| **Modern Stack** | Laravel 11, PHP 8.2+, Bootstrap 5, jQuery, Vite, and modern PHP best practices |
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## Tech Stack
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- **Backend:** Laravel 11, PHP 8.2+
+- **Frontend:** Bootstrap 5 (Sneat theme), jQuery, Vite
+- **Database:** MySQL / MariaDB
+- **Libraries:** DataTables, Select2, SweetAlert2, Maatwebsite Excel
+- **Auth:** Custom admin guard (no Breeze / Jetstream / Spatie)
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## Requirements
 
-## Contributing
+- PHP >= 8.2
+- Composer
+- Node.js >= 18 & npm
+- MySQL / MariaDB
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## Installation
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+# 1. Clone the repository
+git clone <repo-url> kstarter-laravel
+cd kstarter-laravel
 
-## Security Vulnerabilities
+# 2. Install PHP dependencies
+composer install
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# 3. Install Node dependencies and build assets
+npm install && npm run build
+
+# 4. Copy environment file and generate app key
+cp .env.example .env
+php artisan key:generate
+
+# 5. Configure your database in .env
+DB_DATABASE=kstarter
+DB_USERNAME=root
+DB_PASSWORD=
+
+# 6. Run migrations and seeders
+php artisan migrate --seed
+
+# 7. Serve the application
+php artisan serve
+```
+
+Then visit `http://localhost:8000` for the landing page or `http://localhost:8000/admin/login` for the admin panel.
+
+---
+
+## Default Admin Credentials
+
+| Field | Value |
+|---|---|
+| Username | `security_admin` |
+| Password | `password` |
+
+> Change these immediately after first login via the Profile page.
+
+---
+
+## Project Structure
+
+```
+app/
+├── Http/
+│   └── Controllers/Admin/    # Thin controllers — delegate to services
+├── Services/Admin/           # Business logic layer
+├── Libraries/Admin/          # View data preparation and form handling
+├── Models/                   # Eloquent models
+├── Validations/              # Form request validation classes
+├── Helpers/                  # Global helper functions (encodeId, decodeId, etc.)
+└── Http/Middleware/          # Admin auth, XSS sanitization, permission check
+
+resources/views/
+├── admin/                    # Admin panel views (Sneat theme)
+└── front/                    # Public landing page
+```
+
+---
+
+## Architecture
+
+KStarter follows a layered architecture designed to keep controllers thin and logic testable:
+
+```
+Request → Controller → Service → Library → View
+                     ↓
+                 Validation
+                     ↓
+                  Model / DB
+```
+
+- **Controller** — receives HTTP request, calls service, returns response
+- **Service** — orchestrates business logic, calls libraries and models
+- **Library** — prepares view data, handles form logic
+- **Validation** — dedicated classes per action (Store, Update)
+
+---
+
+## Seeding
+
+```bash
+# Seed all data (users, roles, permissions, permission categories)
+php artisan db:seed
+
+# Re-seed permissions (safe to run multiple times — uses updateOrCreate)
+php artisan db:seed --class=PermissionsSeeder
+```
+
+---
+
+## Key Conventions
+
+- IDs are obfuscated in URLs via `encodeId()` / `decodeId()` helpers
+- All AJAX responses follow `{ success: bool, message: string, html?: string }`
+- Admin guards are separate from web guards (`config/auth.php`)
+- XSS middleware sanitizes all incoming input automatically
+- Permission middleware checks routes against the `permissions` table on every request
+
+---
+
+## Support the Project
+
+If KStarter saved you time, consider a small donation to help keep it free and actively maintained.
+
+**Meezan Bank — Pakistan**
+`PK31MEZN0002760105244525`
+
+---
+
+## Creator
+
+**Kashif Ali**
+- Portfolio: [kashifali.kitsoftsol.com](https://kashifali.kitsoftsol.com)
+- Email: [alikashi54321@gmail.com](mailto:alikashi54321@gmail.com)
+
+---
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-# kstarter-laravel
+KStarter Laravel is open-source software released under the [MIT License](https://opensource.org/licenses/MIT).
