@@ -25,8 +25,28 @@ class AdminUsersController extends Controller
         return $this->adminUsersService->formAdd($request);
     }
 
-    public function formEdit(Request $request, $id)
+    public function formEdit(Request $request, string $id)
     {
         return $this->adminUsersService->formEdit($request, $id);
+    }
+
+    public function store(Request $request)
+    {
+        return $this->adminUsersService->store($request);
+    }
+
+    public function update(Request $request, string $id)
+    {
+        return $this->adminUsersService->update($request, $id);
+    }
+
+    public function delete(Request $request, string $id)
+    {
+        return $this->adminUsersService->delete($request, $id);
+    }
+
+    public function toggleStatus(Request $request, string $id)
+    {
+        return $this->adminUsersService->toggleStatus($request, $id);
     }
 }

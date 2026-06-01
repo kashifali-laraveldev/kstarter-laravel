@@ -1,4 +1,4 @@
-@charset "UTF-8";
+﻿@charset "UTF-8";
 
 /*!
  * Bootstrap  v5.3.3 (https://getbootstrap.com/)
@@ -745,7 +745,7 @@ progress {
 }
 
 .blockquote-footer::before {
-    content: "— "
+    content: "- "
 }
 
 .img-fluid {

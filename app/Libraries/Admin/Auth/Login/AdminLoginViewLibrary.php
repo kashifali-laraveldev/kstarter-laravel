@@ -3,6 +3,7 @@
 namespace App\Libraries\Admin\Auth\Login;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AdminLoginViewLibrary
 {
@@ -10,8 +11,6 @@ class AdminLoginViewLibrary
 
     public function loginView(Request $request)
     {
-        $data = [];
-        return view('admin.auth.index')->with($data);
+        return view('admin.auth.index');
     }
-
 }

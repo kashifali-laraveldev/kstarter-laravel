@@ -1,5 +1,5 @@
 @extends('admin.layout.admin_master')
-@section('title', 'KStarter | Edit Role')
+@section('title', 'KStarter Laravel | Edit Role')
 
 @section('css')
 <style>
@@ -15,7 +15,7 @@
     .perm-card-header i { color: #696cff; font-size: 1rem; }
     .perm-card-header span { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #566a7f; }
     .perm-card-body { padding: 1rem; }
-    .perm-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.5rem 1rem; }
+    .perm-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem 1rem; }
     .perm-grid .form-check-label { font-size: 0.875rem; color: #566a7f; cursor: pointer; }
     .perm-grid .form-check-input { cursor: pointer; }
 </style>
@@ -39,17 +39,19 @@
     </a>
 </div>
 
-<form method="POST" onsubmit="return false">
+<form method="POST" action="{{ route('admin.roles.update', encodeId($role->id)) }}">
+@csrf
 <div class="card">
     <div class="card-body">
 
-        {{-- Role Name --}}
         <div class="mb-4">
             <label class="form-label">Role Name</label>
-            <input type="text" class="form-control" id="role_name" value="Admin" placeholder="e.g. Manager">
+            <input type="text" class="form-control @error('role_name') is-invalid @enderror" name="role_name" value="{{ old('role_name', $role->role_name) }}" placeholder="e.g. Manager">
+            @error('role_name')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
         </div>
 
-        {{-- Permissions --}}
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h6 class="mb-0"><i class="bx bx-lock-open-alt me-2 text-primary"></i> Permissions</h6>
             <div class="d-flex gap-2">
@@ -59,32 +61,32 @@
         </div>
 
         <div class="row g-3">
-            @foreach([
-                'User Management'       => ['icon' => 'bx-user',        'perms' => ['Create Users','Edit Users','Delete Users','View Users']],
-                'Role Management'       => ['icon' => 'bx-shield',      'perms' => ['Create Roles','Edit Roles','Delete Roles','View Roles']],
-                'Permission Management' => ['icon' => 'bx-lock-open-alt','perms' => ['Create Permissions','Edit Permissions','Delete Permissions','View Permissions']],
-                'Reports'               => ['icon' => 'bx-bar-chart-alt-2','perms' => ['View Reports','Export Report Data','Download Report']],
-                'Settings'              => ['icon' => 'bx-cog',         'perms' => ['General Settings','Mail Settings','Payment Settings','Security Settings']],
-                'Content Management'    => ['icon' => 'bx-file',        'perms' => ['Manage Pages','Manage Blog','Manage Media','Manage Categories']],
-            ] as $category => $cat)
+            @foreach($categories as $category)
+            @if($category->permissions->isNotEmpty())
             <div class="col-12">
                 <div class="perm-card">
                     <div class="perm-card-header">
-                        <i class="bx {{ $cat['icon'] }}"></i>
-                        <span>{{ $category }}</span>
+                        <i class="{{ $category->css_class }}"></i>
+                        <span>{{ $category->category_name }}</span>
                     </div>
                     <div class="perm-card-body">
                         <div class="perm-grid">
-                            @foreach($cat['perms'] as $perm)
+                            @foreach($category->permissions as $permission)
+                            @php $encodedPermId = encodeId($permission->id); @endphp
                             <div class="form-check">
-                                <input class="form-check-input perm-checkbox" type="checkbox" id="perm_{{ $loop->parent->index }}_{{ $loop->index }}">
-                                <label class="form-check-label" for="perm_{{ $loop->parent->index }}_{{ $loop->index }}">{{ $perm }}</label>
+                                <input class="form-check-input perm-checkbox" type="checkbox"
+                                    name="permission_ids[]"
+                                    value="{{ $encodedPermId }}"
+                                    id="perm_{{ $encodedPermId }}"
+                                    {{ in_array($permission->id, $rolePermissionIds) ? 'checked' : '' }}>
+                                <label class="form-check-label" for="perm_{{ $encodedPermId }}">{{ $permission->permission_name }}</label>
                             </div>
                             @endforeach
                         </div>
                     </div>
                 </div>
             </div>
+            @endif
             @endforeach
         </div>
 

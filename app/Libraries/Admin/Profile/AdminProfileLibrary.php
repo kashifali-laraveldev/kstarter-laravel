@@ -3,6 +3,7 @@
 namespace App\Libraries\Admin\Profile;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AdminProfileLibrary
 {
@@ -10,7 +11,8 @@ class AdminProfileLibrary
 
     public function index(Request $request)
     {
-        $data = [];
+        $user = Auth::guard('admin')->user()->load(['profile', 'userRoles.role']);
+        $data['user'] = $user;
         return view('admin.profile.index')->with($data);
     }
 }

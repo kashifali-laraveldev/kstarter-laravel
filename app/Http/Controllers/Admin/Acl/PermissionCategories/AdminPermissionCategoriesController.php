@@ -20,18 +20,33 @@ class AdminPermissionCategoriesController extends Controller
         return $this->adminPermissionCategoriesService->index($request);
     }
 
-    public function create(Request $request)
-    {
-        return $this->adminPermissionCategoriesService->create($request);
-    }
-
     public function formAdd(Request $request)
     {
         return $this->adminPermissionCategoriesService->formAdd($request);
     }
 
-    public function formEdit(Request $request, $id)
+    public function formEdit(Request $request, string $id)
     {
         return $this->adminPermissionCategoriesService->formEdit($request, $id);
+    }
+
+    public function store(Request $request)
+    {
+        return $this->adminPermissionCategoriesService->store($request);
+    }
+
+    public function update(Request $request, string $id)
+    {
+        return $this->adminPermissionCategoriesService->update($request, $id);
+    }
+
+    public function delete(Request $request, string $id)
+    {
+        return $this->adminPermissionCategoriesService->delete($request, $id);
+    }
+
+    public function updateOrder(Request $request, string $id)
+    {
+        return $this->adminPermissionCategoriesService->updateOrder($request, $id);
     }
 }

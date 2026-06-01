@@ -40,10 +40,50 @@ $(document).ready(function () {
             });
     });
 
+    $('#addRoleForm').on('submit', function () {
+        loadSpinnerSwal();
+        $.ajax({
+            url: '/admin/roles/store',
+            method: 'POST',
+            data: $(this).serialize(),
+            success: function (res) {
+                hideSpinnerSwal();
+                if (res.status) {
+                    bootstrap.Offcanvas.getInstance(document.getElementById('addRoleDrawer')).hide();
+                    successSwal(res.message).then(function () { location.reload(); });
+                } else {
+                    errorSwal(res.message);
+                }
+            },
+            error: function () {
+                hideSpinnerSwal();
+                errorSwal('Something went wrong. Please try again.');
+            }
+        });
+    });
+
     // ── Delete Role ───────────────────────────────────────────────────────────
     $(document).on('click', '.btn-delete-role', function () {
+        var id = $(this).data('id');
         warningSwal('This action cannot be undone.', 'Yes, delete it!').then(function (result) {
-            if (result.isConfirmed) { successSwal('Role has been deleted.'); }
+            if (!result.isConfirmed) return;
+            loadSpinnerSwal();
+            $.ajax({
+                url: '/admin/roles/delete/' + id,
+                method: 'POST',
+                success: function (res) {
+                    hideSpinnerSwal();
+                    if (res.status) {
+                        successSwal(res.message).then(function () { location.reload(); });
+                    } else {
+                        errorSwal(res.message);
+                    }
+                },
+                error: function () {
+                    hideSpinnerSwal();
+                    errorSwal('Something went wrong. Please try again.');
+                }
+            });
         });
     });
 

@@ -20,12 +20,7 @@ class AdminRolesController extends Controller
         return $this->adminRolesService->index($request);
     }
 
-    public function create(Request $request)
-    {
-        return $this->adminRolesService->create($request);
-    }
-
-    public function edit(Request $request, $id)
+    public function edit(Request $request, string $id)
     {
         return $this->adminRolesService->edit($request, $id);
     }
@@ -33,5 +28,20 @@ class AdminRolesController extends Controller
     public function formAdd(Request $request)
     {
         return $this->adminRolesService->formAdd($request);
+    }
+
+    public function store(Request $request)
+    {
+        return $this->adminRolesService->store($request);
+    }
+
+    public function update(Request $request, string $id)
+    {
+        return $this->adminRolesService->update($request, $id);
+    }
+
+    public function delete(Request $request, string $id)
+    {
+        return $this->adminRolesService->delete($request, $id);
     }
 }

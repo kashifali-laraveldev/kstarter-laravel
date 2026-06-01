@@ -5,20 +5,11 @@ $(document).ready(function () {
         paging: true,
         searching: true,
         ordering: true,
-        columnDefs: [
-            { orderable: false, targets: [3, 4, 5] },
-            {
-                targets: 4,
-                render: function (data, type) {
-                    if (type === 'display') return data;
-                    return $('<div>').html(data).text().trim();
-                }
-            }
-        ],
+        columnDefs: [{ orderable: false, targets: [3, 4] }],
         buttons: [{
             extend: 'excel',
             text: '',
-            exportOptions: { columns: [0,1,2,3,4], orthogonal: 'search' }
+            exportOptions: { columns: [0, 1, 2, 3] }
         }],
         language: {
             info: 'Showing _START_ to _END_ of _TOTAL_ permissions',
@@ -38,22 +29,8 @@ $(document).ready(function () {
         });
     }
 
-    var permSearchTerm = '';
-
-    $.fn.dataTable.ext.search.push(function (settings, data) {
-        if (settings.nTable.id !== 'permissionsTable') return true;
-        if (!permSearchTerm) return true;
-        var term     = permSearchTerm.toLowerCase();
-        var permName = (data[1] || '').toLowerCase();
-        var route    = (data[2] || '').toLowerCase();
-        var category = (data[3] || '').toLowerCase();
-        var roles    = $('<div>').html(data[4] || '').text().toLowerCase();
-        return permName.includes(term) || route.includes(term) || category.includes(term) || roles.includes(term);
-    });
-
     $('#permSearchInput').on('keyup input search', function () {
-        permSearchTerm = this.value;
-        table.draw();
+        table.search(this.value).draw();
     });
 
     $('#exportPermsBtn').on('click', function () {
@@ -76,23 +53,39 @@ $(document).ready(function () {
             });
     });
 
-    // ── Edit Permission ───────────────────────────────────────────────────────
-    $(document).on('click', '.btn-edit-perm', function () {
-        var btn  = $(this);
-        var data = {
-            name:     btn.data('name'),
-            category: btn.data('category'),
-            route:    btn.data('route'),
-        };
+    $('#addPermissionForm').on('submit', function () {
         loadSpinnerSwal();
-        $.get('/admin/permissions/form/edit/' + btn.data('id'))
+        $.ajax({
+            url: '/admin/permissions/store',
+            method: 'POST',
+            data: $(this).serialize(),
+            success: function (res) {
+                hideSpinnerSwal();
+                if (res.status) {
+                    bootstrap.Offcanvas.getInstance(document.getElementById('addPermissionDrawer')).hide();
+                    successSwal(res.message).then(function () { location.reload(); });
+                } else {
+                    errorSwal(res.message);
+                }
+            },
+            error: function () {
+                hideSpinnerSwal();
+                errorSwal('Something went wrong. Please try again.');
+            }
+        });
+    });
+
+    // ── Edit Permission ───────────────────────────────────────────────────────
+    var currentPermId = null;
+
+    $(document).on('click', '.btn-edit-perm', function () {
+        currentPermId = $(this).data('id');
+        loadSpinnerSwal();
+        $.get('/admin/permissions/form/edit/' + currentPermId)
             .done(function (res) {
                 hideSpinnerSwal();
                 $('#editPermissionDrawerBody').html(res.html);
                 initSelect2('editPermissionDrawer');
-                $('#edit_perm_name').val(data.name);
-                $('#edit_perm_category').val(data.category).trigger('change');
-                $('#edit_perm_route').val(data.route);
                 bootstrap.Offcanvas.getOrCreateInstance(document.getElementById('editPermissionDrawer'), { backdrop: false, keyboard: false, scroll: true }).show();
             })
             .fail(function () {
@@ -101,10 +94,51 @@ $(document).ready(function () {
             });
     });
 
+    $('#editPermissionForm').on('submit', function () {
+        if (!currentPermId) return;
+        loadSpinnerSwal();
+        $.ajax({
+            url: '/admin/permissions/update/' + currentPermId,
+            method: 'POST',
+            data: $(this).serialize(),
+            success: function (res) {
+                hideSpinnerSwal();
+                if (res.status) {
+                    bootstrap.Offcanvas.getInstance(document.getElementById('editPermissionDrawer')).hide();
+                    successSwal(res.message).then(function () { location.reload(); });
+                } else {
+                    errorSwal(res.message);
+                }
+            },
+            error: function () {
+                hideSpinnerSwal();
+                errorSwal('Something went wrong. Please try again.');
+            }
+        });
+    });
+
     // ── Delete Permission ─────────────────────────────────────────────────────
     $(document).on('click', '.btn-delete-perm', function () {
+        var id = $(this).data('id');
         warningSwal('This action cannot be undone.', 'Yes, delete it!').then(function (result) {
-            if (result.isConfirmed) { successSwal('Permission has been deleted.'); }
+            if (!result.isConfirmed) return;
+            loadSpinnerSwal();
+            $.ajax({
+                url: '/admin/permissions/delete/' + id,
+                method: 'POST',
+                success: function (res) {
+                    hideSpinnerSwal();
+                    if (res.status) {
+                        successSwal(res.message).then(function () { location.reload(); });
+                    } else {
+                        errorSwal(res.message);
+                    }
+                },
+                error: function () {
+                    hideSpinnerSwal();
+                    errorSwal('Something went wrong. Please try again.');
+                }
+            });
         });
     });
 

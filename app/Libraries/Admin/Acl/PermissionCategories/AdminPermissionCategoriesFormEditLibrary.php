@@ -1,10 +1,22 @@
 <?php
+
 namespace App\Libraries\Admin\Acl\PermissionCategories;
-use Illuminate\Http\Request;
-class AdminPermissionCategoriesFormEditLibrary {
-    public function __construct() {}
-    public function formEdit(Request $request, $id) {
-        $data = ['id' => $id];
-        return response()->json(['html' => view('admin.permission-categories.partials.form_edit', $data)->render()]);
+
+use App\Models\PermissionCategoriesModel;
+
+class AdminPermissionCategoriesFormEditLibrary
+{
+    protected PermissionCategoriesModel $permissionCategoriesModel;
+
+    public function __construct()
+    {
+        $this->permissionCategoriesModel = new PermissionCategoriesModel();
+    }
+
+    public function formEdit(string $encodedId)
+    {
+        $category = $this->permissionCategoriesModel->newQuery()->findOrFail(decodeId($encodedId));
+        $html = view('admin.permission-categories.partials.form_edit', ['category' => $category])->render();
+        return response()->json(['html' => $html]);
     }
 }

@@ -25,70 +25,150 @@ $(document).ready(function () {
         table.button(0).trigger();
     });
 
-    // ── Select2 — initialise once on page load ────────────────────────────────
-    $('#userDrawer select').each(function () {
-        $(this).select2({ theme: 'bootstrap-5', dropdownParent: $('#userDrawer'), width: '100%' });
-    });
-
-    var drawer = bootstrap.Offcanvas.getOrCreateInstance(
-        document.getElementById('userDrawer'),
-        { backdrop: false, keyboard: false, scroll: true }
-    );
-
-    function setAddMode() {
-        $('#userDrawerIcon').attr('class', 'bx bx-user-plus me-2 text-primary');
-        $('#userDrawerTitle').text('Add New User');
-        $('#userDrawerSaveLabel').text('Save User');
-        $('#userPasswordLabel').text('Password');
-        document.getElementById('userForm').reset();
-        $('#user_role').val('').trigger('change');
-        $('#user_status').val('Active').trigger('change');
-    }
-
-    function setEditMode(data) {
-        $('#userDrawerIcon').attr('class', 'bx bx-edit me-2 text-primary');
-        $('#userDrawerTitle').text('Edit User');
-        $('#userDrawerSaveLabel').text('Update User');
-        $('#userPasswordLabel').text('New Password (leave blank to keep)');
-        $('#user_first_name').val(data.first_name);
-        $('#user_last_name').val(data.last_name);
-        $('#user_username').val(data.username);
-        $('#user_email').val(data.email);
-        $('#user_mobile').val(data.mobile);
-        $('#user_department').val(data.department);
-        $('#user_password').val('');
-        $('#user_password_confirmation').val('');
-        $('#user_role').val(data.role).trigger('change');
-        $('#user_status').val(data.status).trigger('change');
+    function initSelect2(drawerId) {
+        $('#' + drawerId + ' select').each(function () {
+            if (!$(this).hasClass('select2-hidden-accessible')) {
+                $(this).select2({ theme: 'bootstrap-5', dropdownParent: $('#' + drawerId), width: '100%' });
+            }
+        });
     }
 
     // ── Add User ──────────────────────────────────────────────────────────────
     $('#addUserBtn').on('click', function () {
-        setAddMode();
-        drawer.show();
+        loadSpinnerSwal();
+        $.get('/admin/users/form/add')
+            .done(function (res) {
+                hideSpinnerSwal();
+                $('#addUserDrawerBody').html(res.html);
+                initSelect2('addUserDrawer');
+                bootstrap.Offcanvas.getOrCreateInstance(document.getElementById('addUserDrawer'), { backdrop: false, keyboard: false, scroll: true }).show();
+            })
+            .fail(function () {
+                hideSpinnerSwal();
+                errorSwal('Failed to load form. Please try again.');
+            });
+    });
+
+    $('#addUserForm').on('submit', function () {
+        loadSpinnerSwal();
+        $.ajax({
+            url: '/admin/users/store',
+            method: 'POST',
+            data: $(this).serialize(),
+            success: function (res) {
+                hideSpinnerSwal();
+                if (res.status) {
+                    bootstrap.Offcanvas.getInstance(document.getElementById('addUserDrawer')).hide();
+                    successSwal(res.message).then(function () { location.reload(); });
+                } else {
+                    errorSwal(res.message);
+                }
+            },
+            error: function () {
+                hideSpinnerSwal();
+                errorSwal('Something went wrong. Please try again.');
+            }
+        });
     });
 
     // ── Edit User ─────────────────────────────────────────────────────────────
+    var currentUserId = null;
+
     $(document).on('click', '.btn-edit-user', function () {
-        var btn   = $(this);
-        var parts = (btn.data('name') || '').split(' ');
-        setEditMode({
-            first_name: parts[0] || '',
-            last_name:  parts.slice(1).join(' ') || '',
-            username:   btn.data('username'),
-            email:      btn.data('email'),
-            mobile:     btn.data('mobile'),
-            department: btn.data('department'),
-            role:       btn.data('role'),
-            status:     btn.data('status'),
+        currentUserId = $(this).data('id');
+        loadSpinnerSwal();
+        $.get('/admin/users/form/edit/' + currentUserId)
+            .done(function (res) {
+                hideSpinnerSwal();
+                $('#editUserDrawerBody').html(res.html);
+                initSelect2('editUserDrawer');
+                bootstrap.Offcanvas.getOrCreateInstance(document.getElementById('editUserDrawer'), { backdrop: false, keyboard: false, scroll: true }).show();
+            })
+            .fail(function () {
+                hideSpinnerSwal();
+                errorSwal('Failed to load form. Please try again.');
+            });
+    });
+
+    $('#editUserForm').on('submit', function () {
+        if (!currentUserId) return;
+        loadSpinnerSwal();
+        $.ajax({
+            url: '/admin/users/update/' + currentUserId,
+            method: 'POST',
+            data: $(this).serialize(),
+            success: function (res) {
+                hideSpinnerSwal();
+                if (res.status) {
+                    bootstrap.Offcanvas.getInstance(document.getElementById('editUserDrawer')).hide();
+                    successSwal(res.message).then(function () { location.reload(); });
+                } else {
+                    errorSwal(res.message);
+                }
+            },
+            error: function () {
+                hideSpinnerSwal();
+                errorSwal('Something went wrong. Please try again.');
+            }
         });
-        drawer.show();
+    });
+
+    // ── Toggle Status ─────────────────────────────────────────────────────────
+    $(document).on('click', '.btn-toggle-status', function () {
+        var badge      = $(this);
+        var id         = badge.data('id');
+        var isActive   = badge.text().trim() === 'Active';
+        var actionWord = isActive ? 'deactivate' : 'activate';
+
+        warningSwal('Are you sure you want to ' + actionWord + ' this user?', 'Yes, ' + actionWord + '!')
+            .then(function (result) {
+                if (!result.isConfirmed) return;
+                loadSpinnerSwal();
+                $.ajax({
+                    url: '/admin/users/toggle-status/' + id,
+                    method: 'POST',
+                    success: function (res) {
+                        hideSpinnerSwal();
+                        if (res.status) {
+                            var nowActive = res.new_status === 'Active';
+                            badge.text(res.new_status)
+                                 .removeClass('bg-label-success bg-label-danger')
+                                 .addClass(nowActive ? 'bg-label-success' : 'bg-label-danger');
+                            successSwal(res.message);
+                        } else {
+                            errorSwal(res.message);
+                        }
+                    },
+                    error: function () {
+                        hideSpinnerSwal();
+                        errorSwal('Something went wrong. Please try again.');
+                    }
+                });
+            });
     });
 
     // ── Delete User ───────────────────────────────────────────────────────────
     $(document).on('click', '.btn-delete-user', function () {
+        var id = $(this).data('id');
         warningSwal('This action cannot be undone.', 'Yes, delete it!').then(function (result) {
-            if (result.isConfirmed) { successSwal('User has been deleted.'); }
+            if (!result.isConfirmed) return;
+            loadSpinnerSwal();
+            $.ajax({
+                url: '/admin/users/delete/' + id,
+                method: 'POST',
+                success: function (res) {
+                    hideSpinnerSwal();
+                    if (res.status) {
+                        successSwal(res.message).then(function () { location.reload(); });
+                    } else {
+                        errorSwal(res.message);
+                    }
+                },
+                error: function () {
+                    hideSpinnerSwal();
+                    errorSwal('Something went wrong. Please try again.');
+                }
+            });
         });
     });
 

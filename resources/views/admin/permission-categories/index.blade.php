@@ -1,5 +1,5 @@
 @extends('admin.layout.admin_master')
-@section('title', 'KStarter | Permission Categories')
+@section('title', 'KStarter Laravel | Permission Categories')
 
 @section('css')
 <style>
@@ -11,7 +11,6 @@
     .offcanvas-footer { border-top: 1px solid #e7e7e9; padding: 1.25rem 1.5rem; }
     .offcanvas-body { padding: 1.5rem; }
 
-    /* Inline editable display order */
     .order-input {
         width: 70px;
         text-align: center;
@@ -54,16 +53,18 @@
             </ol>
         </nav>
     </div>
+    @if(validatePermissions('admin/permission-categories/form/add'))
     <button class="btn btn-primary" type="button" id="addCategoryBtn">
         <i class="bx bx-plus me-1"></i> Add Category
     </button>
+    @endif
 </div>
 
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center gap-3">
         <input type="text" id="catSearchInput" class="form-control" placeholder="Search categories..." style="max-width:20%;">
         <div class="d-flex gap-2">
-            <button id="exportCatsBtn" class="btn btn-outline-success">
+            <button id="exportCatsBtn" class="btn btn-success">
                 <i class="bx bx-export me-1"></i> Export Excel
             </button>
         </div>
@@ -81,49 +82,52 @@
                     </tr>
                 </thead>
                 <tbody class="table-border-bottom-0">
-                    @foreach([
-                        [1, 'User Management',      'bx bx-user',           ['All Users Listing', 'Create User', 'Edit User', 'Delete User', 'View User'],                 1],
-                        [2, 'Role Management',       'bx bx-shield',         ['All Roles Listing', 'Create Role', 'Edit Role', 'Delete Role'],                              2],
-                        [3, 'Permission Management', 'bx bx-lock-open-alt',  ['All Permissions', 'Create Permission', 'Edit Permission', 'Delete Permission'],               3],
-                        [4, 'Reports',               'bx bx-bar-chart-alt-2',['View Reports', 'Export Report Data', 'Download Report'],                                     4],
-                        [5, 'Settings',              'bx bx-cog',            ['General Settings', 'Mail Settings', 'Payment Settings', 'SMS Settings', 'Cache Settings',
-                                                                               'Backup Settings', 'Security Settings', 'API Settings', 'Log Settings', 'Profile Settings'],  5],
-                        [6, 'Content Management',    'bx bx-file',           ['Manage Pages', 'Manage Blog', 'Manage Media', 'Manage Banners', 'Manage FAQs',
-                                                                               'Manage Testimonials', 'Manage Tags', 'Manage Categories', 'Manage Comments'],                 6],
-                    ] as $cat)
+                    @forelse($categories as $index => $category)
                     <tr>
-                        <td>{{ $cat[0] }}</td>
-                        <td>{{ $cat[1] }}</td>
+                        <td>{{ $index + 1 }}</td>
                         <td>
-                            <div class="d-flex flex-wrap align-items-center gap-1">
-                                @foreach(array_slice($cat[3], 0, 3) as $perm)
-                                    <span class="badge bg-label-primary">{{ $perm }}</span>
-                                @endforeach
-                                @if(count($cat[3]) > 3)
-                                    <span class="text-muted small">+{{ count($cat[3]) - 3 }} more</span>
+                            <div class="d-flex align-items-center gap-2">
+                                @if($category->css_class)
+                                    <i class="{{ $category->css_class }} text-primary"></i>
                                 @endif
+                                {{ $category->category_name }}
                             </div>
+                        </td>
+                        <td>
+                            @php $count = $category->permissions_count ?? 0; @endphp
+                            @if($count > 0)
+                                <span class="badge bg-label-primary">{{ $count }} permission{{ $count > 1 ? 's' : '' }}</span>
+                            @else
+                                <span class="text-muted small">No permissions</span>
+                            @endif
                         </td>
                         <td>
                             <input type="text"
                                 class="order-input"
-                                value="{{ $cat[4] }}"
-                                data-id="{{ $cat[0] }}"
+                                value="{{ $category->display_order }}"
+                                data-id="{{ encodeId($category->id) }}"
                                 title="Click to edit display order">
                         </td>
                         <td>
+                            @if(validatePermissions('admin/permission-categories/form/edit/{id}'))
                             <button class="btn btn-sm btn-icon btn-text-secondary btn-edit-cat"
-                                data-id="{{ $cat[0] }}"
-                                data-name="{{ $cat[1] }}"
-                                data-icon="{{ $cat[2] }}">
+                                data-id="{{ encodeId($category->id) }}">
                                 <i class="bx bx-edit-alt"></i>
                             </button>
-                            <a href="javascript:void(0);" class="btn btn-sm btn-icon btn-text-danger btn-delete-cat">
+                            @endif
+                            @if(validatePermissions('admin/permission-categories/delete/{id}'))
+                            <a href="javascript:void(0);" class="btn btn-sm btn-icon btn-text-danger btn-delete-cat"
+                                data-id="{{ encodeId($category->id) }}">
                                 <i class="bx bx-trash"></i>
                             </a>
+                            @endif
                         </td>
                     </tr>
-                    @endforeach
+                    @empty
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-3">No categories found.</td>
+                    </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

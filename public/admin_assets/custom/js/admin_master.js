@@ -1,3 +1,10 @@
+// ─── Global AJAX CSRF setup ───────────────────────────────────────────────────
+$(function () {
+    $.ajaxSetup({
+        headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+    });
+});
+
 // ─── Drawer backdrop ──────────────────────────────────────────────────────────
 (function () {
     var bd = document.createElement('div');
@@ -7,6 +14,16 @@
     document.addEventListener('show.bs.offcanvas', function () {
         bd.style.display = 'block';
         requestAnimationFrame(function () { bd.classList.add('ks-bd-show'); });
+        var sbw = window.innerWidth - document.documentElement.clientWidth;
+        if (sbw > 0) document.documentElement.style.paddingRight = sbw + 'px';
+        document.documentElement.style.overflowY = 'hidden';
+        document.body.style.overflow = 'hidden';
+    });
+
+    document.addEventListener('hidden.bs.offcanvas', function () {
+        document.documentElement.style.overflowY = '';
+        document.documentElement.style.paddingRight = '';
+        document.body.style.overflow = '';
     });
 
     document.addEventListener('hide.bs.offcanvas', function () {

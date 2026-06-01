@@ -1,5 +1,5 @@
 @extends('admin.layout.admin_master')
-@section('title', 'KStarter | Roles')
+@section('title', 'KStarter Laravel | Roles')
 
 @section('css')
 <style>
@@ -10,7 +10,6 @@
     .offcanvas-header { border-bottom: 1px solid #e7e7e9; padding: 1.25rem 1.5rem; }
     .offcanvas-footer { border-top: 1px solid #e7e7e9; padding: 1.25rem 1.5rem; }
     .offcanvas-body { padding: 1.5rem; }
-
 </style>
 @endsection
 
@@ -26,16 +25,18 @@
             </ol>
         </nav>
     </div>
+    @if(validatePermissions('admin/roles/form/add'))
     <button class="btn btn-primary" type="button" id="addRoleBtn">
         <i class="bx bx-plus me-1"></i> Add Role
     </button>
+    @endif
 </div>
 
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center gap-3">
         <input type="text" id="roleSearchInput" class="form-control" placeholder="Search roles..." style="max-width:20%;">
         <div class="d-flex gap-2">
-            <button id="exportRolesBtn" class="btn btn-outline-success">
+            <button id="exportRolesBtn" class="btn btn-success">
                 <i class="bx bx-export me-1"></i> Export Excel
             </button>
         </div>
@@ -52,38 +53,39 @@
                     </tr>
                 </thead>
                 <tbody class="table-border-bottom-0">
-                    @foreach([
-                        [1, 'Admin',     ['Create Users','Edit Users','Delete Users','View Users','Create Roles','Edit Roles','Delete Roles','View Reports','Manage Permissions','System Settings']],
-                        [2, 'Manager',   ['Create Users','Edit Users','View Users','View Reports','Manage Permissions']],
-                        [3, 'Editor',    ['Create Users','Edit Users','View Users']],
-                        [4, 'Moderator', ['View Users','View Reports']],
-                        [5, 'Viewer',    ['View Users']],
-                        [6, 'Support',   ['View Users','View Reports']],
-                        [7, 'Analyst',   ['View Reports','Export Report Data']],
-                    ] as $role)
+                    @forelse($roles as $index => $role)
                     <tr>
-                        <td>{{ $role[0] }}</td>
-                        <td>{{ $role[1] }}</td>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $role->role_name }}</td>
                         <td>
                             <div class="d-flex flex-wrap align-items-center gap-1">
-                                @foreach(array_slice($role[2], 0, 3) as $perm)
-                                    <span class="badge bg-label-warning">{{ $perm }}</span>
-                                @endforeach
-                                @if(count($role[2]) > 3)
-                                    <span class="text-muted small">+{{ count($role[2]) - 3 }} more</span>
+                                @php $permCount = $role->permissions_count ?? 0; @endphp
+                                @if($permCount > 0)
+                                    <span class="badge bg-label-warning">{{ $permCount }} permission{{ $permCount > 1 ? 's' : '' }}</span>
+                                @else
+                                    <span class="text-muted small">No permissions</span>
                                 @endif
                             </div>
                         </td>
                         <td>
-                            <a href="{{ url('admin/roles/' . $role[0] . '/edit') }}" class="btn btn-sm btn-icon btn-text-secondary">
+                            @if(validatePermissions('admin/roles/edit/{id}') && $role->id !== 1)
+                            <a href="{{ route('admin.roles.edit', encodeId($role->id)) }}" class="btn btn-sm btn-icon btn-text-secondary">
                                 <i class="bx bx-edit-alt"></i>
                             </a>
-                            <a href="javascript:void(0);" class="btn btn-sm btn-icon btn-text-danger btn-delete-role">
+                            @endif
+                            @if(validatePermissions('admin/roles/delete/{id}') && $role->id !== 1)
+                            <a href="javascript:void(0);" class="btn btn-sm btn-icon btn-text-danger btn-delete-role"
+                                data-id="{{ encodeId($role->id) }}">
                                 <i class="bx bx-trash"></i>
                             </a>
+                            @endif
                         </td>
                     </tr>
-                    @endforeach
+                    @empty
+                    <tr>
+                        <td colspan="4" class="text-center text-muted py-3">No roles found.</td>
+                    </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

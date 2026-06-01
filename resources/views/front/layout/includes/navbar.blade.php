@@ -19,18 +19,24 @@
 
         <!-- Action Buttons -->
         <div class="navbar-actions">
-            <a href="{{ route('admin.login.view') }}" class="btn-github">
-                <i class="bi bi-box-arrow-in-right"></i>
-                Login
-            </a>
-            <a href="{{ url('/') }}" class="btn-github">
-                <i class="bi bi-box-arrow-right"></i>
-                Logout
-            </a>
-            <a href="{{ route('admin.dashboard') }}" class="btn-download-nav">
-                <i class="bi bi-speedometer2"></i>
-                Dashboard
-            </a>
+            @if(Auth::guard('admin')->check())
+                <form method="POST" action="{{ route('admin.logout') }}" style="display:contents;">
+                    @csrf
+                    <button type="submit" class="btn-github">
+                        <i class="bi bi-box-arrow-right"></i>
+                        Logout
+                    </button>
+                </form>
+                <a href="{{ route('admin.dashboard') }}" class="btn-download-nav">
+                    <i class="bi bi-speedometer2"></i>
+                    Dashboard
+                </a>
+            @else
+                <a href="{{ route('admin.login.view') }}" class="btn-github">
+                    <i class="bi bi-box-arrow-in-right"></i>
+                    Login
+                </a>
+            @endif
         </div>
     </div>
 </nav>

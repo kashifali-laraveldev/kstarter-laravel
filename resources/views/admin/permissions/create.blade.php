@@ -1,5 +1,5 @@
 ﻿@extends('admin.layout.admin_master')
-@section('title', 'KStarter | Add New Permission')
+@section('title', 'KStarter Laravel | Add New Permission')
 @section('content')
 
 <h4 class="fw-bold py-3 mb-4">

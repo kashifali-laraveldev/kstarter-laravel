@@ -21,7 +21,7 @@
         <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
             <div class="ks-footer-copy">
                 &copy; <script>document.write(new Date().getFullYear());</script>
-                <strong>KStarter Laravel</strong> &mdash; All rights reserved.
+                <strong>KStarter Laravel</strong> - All rights reserved.
             </div>
 
             <div class="ks-footer-tagline d-none d-lg-block">

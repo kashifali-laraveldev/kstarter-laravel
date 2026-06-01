@@ -20,18 +20,28 @@ class AdminPermissionsController extends Controller
         return $this->adminPermissionsService->index($request);
     }
 
-    public function create(Request $request)
-    {
-        return $this->adminPermissionsService->create($request);
-    }
-
     public function formAdd(Request $request)
     {
         return $this->adminPermissionsService->formAdd($request);
     }
 
-    public function formEdit(Request $request, $id)
+    public function formEdit(Request $request, string $id)
     {
         return $this->adminPermissionsService->formEdit($request, $id);
+    }
+
+    public function store(Request $request)
+    {
+        return $this->adminPermissionsService->store($request);
+    }
+
+    public function update(Request $request, string $id)
+    {
+        return $this->adminPermissionsService->update($request, $id);
+    }
+
+    public function delete(Request $request, string $id)
+    {
+        return $this->adminPermissionsService->delete($request, $id);
     }
 }

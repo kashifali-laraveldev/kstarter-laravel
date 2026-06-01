@@ -40,20 +40,37 @@ $(document).ready(function () {
 
     $(document).on('blur', '.order-input', function () {
         var input = $(this);
+        var id    = input.data('id');
         var val   = parseInt(input.val(), 10);
-        if (isNaN(val) || val < 1) input.val(1);
-        input.addClass('order-saved');
-        setTimeout(function () { input.removeClass('order-saved'); }, 1200);
+        if (isNaN(val) || val < 1) { input.val(1); val = 1; }
+
+        $.ajax({
+            url: '/admin/permission-categories/order/' + id,
+            method: 'POST',
+            data: { order: val },
+            success: function (res) {
+                if (res.status) {
+                    input.addClass('order-saved');
+                    setTimeout(function () { input.removeClass('order-saved'); }, 1200);
+                } else {
+                    errorSwal(res.message);
+                }
+            },
+            error: function () {
+                errorSwal('Failed to update order.');
+            }
+        });
     });
 
     $(document).on('keydown', '.order-input', function (e) {
         if (e.key === 'Enter') $(this).blur();
     });
 
-    // ── Live icon preview (delegated — works after AJAX inject) ───────────────
-    $(document).on('input', '#edit_cat_icon', function () {
-        var cls = $(this).val().trim() || 'bx bx-category';
-        $('#edit_cat_icon_preview i').attr('class', cls);
+    // ── Live icon preview ─────────────────────────────────────────────────────
+    $(document).on('input', '#add_cat_icon, #edit_cat_icon', function () {
+        var cls      = $(this).val().trim() || 'bx bx-category';
+        var previewId = this.id === 'add_cat_icon' ? '#add_cat_icon_preview i' : '#edit_cat_icon_preview i';
+        $(previewId).attr('class', cls);
     });
 
     // ── Add Category ──────────────────────────────────────────────────────────
@@ -71,21 +88,38 @@ $(document).ready(function () {
             });
     });
 
-    // ── Edit Category ─────────────────────────────────────────────────────────
-    $(document).on('click', '.btn-edit-cat', function () {
-        var btn  = $(this);
-        var data = {
-            name: btn.data('name'),
-            icon: btn.data('icon'),
-        };
+    $('#addCategoryForm').on('submit', function () {
         loadSpinnerSwal();
-        $.get('/admin/permission-categories/form/edit/' + btn.data('id'))
+        $.ajax({
+            url: '/admin/permission-categories/store',
+            method: 'POST',
+            data: $(this).serialize(),
+            success: function (res) {
+                hideSpinnerSwal();
+                if (res.status) {
+                    bootstrap.Offcanvas.getInstance(document.getElementById('addCategoryDrawer')).hide();
+                    successSwal(res.message).then(function () { location.reload(); });
+                } else {
+                    errorSwal(res.message);
+                }
+            },
+            error: function () {
+                hideSpinnerSwal();
+                errorSwal('Something went wrong. Please try again.');
+            }
+        });
+    });
+
+    // ── Edit Category ─────────────────────────────────────────────────────────
+    var currentCatId = null;
+
+    $(document).on('click', '.btn-edit-cat', function () {
+        currentCatId = $(this).data('id');
+        loadSpinnerSwal();
+        $.get('/admin/permission-categories/form/edit/' + currentCatId)
             .done(function (res) {
                 hideSpinnerSwal();
                 $('#editCategoryDrawerBody').html(res.html);
-                $('#edit_cat_name').val(data.name);
-                $('#edit_cat_icon').val(data.icon);
-                $('#edit_cat_icon_preview i').attr('class', data.icon || 'bx bx-category');
                 bootstrap.Offcanvas.getOrCreateInstance(document.getElementById('editCategoryDrawer'), { backdrop: false, keyboard: false, scroll: true }).show();
             })
             .fail(function () {
@@ -94,10 +128,51 @@ $(document).ready(function () {
             });
     });
 
+    $('#editCategoryForm').on('submit', function () {
+        if (!currentCatId) return;
+        loadSpinnerSwal();
+        $.ajax({
+            url: '/admin/permission-categories/update/' + currentCatId,
+            method: 'POST',
+            data: $(this).serialize(),
+            success: function (res) {
+                hideSpinnerSwal();
+                if (res.status) {
+                    bootstrap.Offcanvas.getInstance(document.getElementById('editCategoryDrawer')).hide();
+                    successSwal(res.message).then(function () { location.reload(); });
+                } else {
+                    errorSwal(res.message);
+                }
+            },
+            error: function () {
+                hideSpinnerSwal();
+                errorSwal('Something went wrong. Please try again.');
+            }
+        });
+    });
+
     // ── Delete Category ───────────────────────────────────────────────────────
     $(document).on('click', '.btn-delete-cat', function () {
+        var id = $(this).data('id');
         warningSwal('This action cannot be undone.', 'Yes, delete it!').then(function (result) {
-            if (result.isConfirmed) { successSwal('Category has been deleted.'); }
+            if (!result.isConfirmed) return;
+            loadSpinnerSwal();
+            $.ajax({
+                url: '/admin/permission-categories/delete/' + id,
+                method: 'POST',
+                success: function (res) {
+                    hideSpinnerSwal();
+                    if (res.status) {
+                        successSwal(res.message).then(function () { location.reload(); });
+                    } else {
+                        errorSwal(res.message);
+                    }
+                },
+                error: function () {
+                    hideSpinnerSwal();
+                    errorSwal('Something went wrong. Please try again.');
+                }
+            });
         });
     });
 

@@ -136,6 +136,12 @@ body {
     border-color: var(--kp);
     color: var(--kp);
 }
+button.btn-github {
+    font-family: inherit;
+    line-height: inherit;
+    letter-spacing: inherit;
+    cursor: pointer;
+}
 
 .btn-download-nav {
     display: flex;

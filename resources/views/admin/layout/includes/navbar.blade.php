@@ -1,3 +1,12 @@
+@php
+    $navUser    = Auth::guard('admin')->user()->load('profile');
+    $navProfile = $navUser->profile;
+    $navName    = $navProfile
+        ? trim(($navProfile->first_name ?? '') . ' ' . ($navProfile->last_name ?? ''))
+        : $navUser->user_name;
+    $navInitial = strtoupper(substr($navProfile->first_name ?? $navUser->user_name, 0, 1));
+@endphp
+
 <!-- Navbar -->
 <nav
     class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
@@ -16,7 +25,7 @@
                     <i class="bx bx-rocket"></i> KStarter Laravel
                 </span>
                 <span class="ks-navbar-text">
-                    Skip the boilerplate. <span class="ks-navbar-highlight">Auth, roles & permissions</span> — already built, just ship your product.
+                    Skip the boilerplate. <span class="ks-navbar-highlight">Auth, roles & permissions</span> - already built, just ship your product.
                 </span>
             </div>
         </div>
@@ -26,21 +35,33 @@
             <li class="nav-item navbar-dropdown dropdown-user dropdown">
                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                     <div class="avatar avatar-online">
-                        <img src="{{ asset('admin_assets') }}/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                        @if($navProfile && $navProfile->profile_picture)
+                            <img src="{{ asset('storage/' . $navProfile->profile_picture) }}"
+                                 alt="{{ $navName }}" class="w-px-40 h-auto rounded-circle"
+                                 style="object-fit:cover;">
+                        @else
+                            <span style="display:flex;width:100%;height:100%;background:#696cff;color:#fff;border-radius:50%;align-items:center;justify-content:center;font-weight:700;font-size:16px;">{{ $navInitial }}</span>
+                        @endif
                     </div>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li>
-                        <a class="dropdown-item" href="#">
+                        <a class="dropdown-item" href="{{ route('admin.profile') }}">
                             <div class="d-flex">
                                 <div class="flex-shrink-0 me-3">
                                     <div class="avatar avatar-online">
-                                        <img src="{{ asset('admin_assets') }}/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                                        @if($navProfile && $navProfile->profile_picture)
+                                            <img src="{{ asset('storage/' . $navProfile->profile_picture) }}"
+                                                 alt="{{ $navName }}" class="w-px-40 h-auto rounded-circle"
+                                                 style="object-fit:cover;">
+                                        @else
+                                            <span style="display:flex;width:100%;height:100%;background:#696cff;color:#fff;border-radius:50%;align-items:center;justify-content:center;font-weight:700;font-size:16px;">{{ $navInitial }}</span>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="flex-grow-1">
-                                    <span class="fw-semibold d-block">John Doe</span>
-                                    <small class="text-muted">Admin</small>
+                                    <span class="fw-semibold d-block">{{ $navName ?: $navUser->user_name }}</span>
+                                    <small class="text-muted">{{ $navUser->user_name }}</small>
                                 </div>
                             </div>
                         </a>
@@ -54,10 +75,13 @@
                     </li>
                     <li><div class="dropdown-divider"></div></li>
                     <li>
-                        <a class="dropdown-item" href="{{ url('/') }}">
-                            <i class="bx bx-power-off me-2"></i>
-                            <span class="align-middle">Log Out</span>
-                        </a>
+                        <form method="POST" action="{{ route('admin.logout') }}">
+                            @csrf
+                            <button type="submit" class="dropdown-item">
+                                <i class="bx bx-power-off me-2"></i>
+                                <span class="align-middle">Log Out</span>
+                            </button>
+                        </form>
                     </li>
                 </ul>
             </li>

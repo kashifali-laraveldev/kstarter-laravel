@@ -1,5 +1,5 @@
 @extends('admin.layout.admin_master')
-@section('title', 'KStarter | Permissions')
+@section('title', 'KStarter Laravel | Permissions')
 
 @section('css')
 <style>
@@ -25,16 +25,18 @@
             </ol>
         </nav>
     </div>
+    @if(validatePermissions('admin/permissions/form/add'))
     <button class="btn btn-primary" type="button" id="addPermissionBtn">
         <i class="bx bx-plus me-1"></i> Add Permission
     </button>
+    @endif
 </div>
 
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center gap-3">
         <input type="text" id="permSearchInput" class="form-control" placeholder="Search permissions..." style="max-width:20%;">
         <div class="d-flex gap-2">
-            <button id="exportPermsBtn" class="btn btn-outline-success">
+            <button id="exportPermsBtn" class="btn btn-success">
                 <i class="bx bx-export me-1"></i> Export Excel
             </button>
         </div>
@@ -48,49 +50,50 @@
                         <th>Permission Name</th>
                         <th>Route</th>
                         <th>Category</th>
-                        <th>Assigned Roles</th>
+                        <th>Show in Menu</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody class="table-border-bottom-0">
-                    @foreach([
-                        [1,  'All Users Listing',         'admin/users',                  'User Management', ['Admin', 'Manager', 'Editor', 'Viewer', 'Support']],
-                        [2,  'Create User',               'admin/users/create',           'User Management', ['Admin', 'Manager', 'Editor']],
-                        [3,  'Edit User',                 'admin/users/{id}/edit',        'User Management', ['Admin', 'Manager']],
-                        [4,  'Delete User',               'admin/users/{id}/delete',      'User Management', ['Admin']],
-                        [5,  'All Roles Listing',         'admin/roles',                  'Role Management', ['Admin']],
-                        [6,  'Create Role',               'admin/roles/create',           'Role Management', ['Admin']],
-                        [7,  'Edit Role',                 'admin/roles/{id}/edit',        'Role Management', ['Admin']],
-                        [8,  'Delete Role',               'admin/roles/{id}/delete',      'Role Management', ['Admin']],
-                        [9,  'View Reports',              'admin/reports',                'Reports',         ['Admin', 'Manager', 'Analyst']],
-                        [10, 'Export Report Data',        'admin/reports/export',         'Reports',         ['Admin', 'Analyst']],
-                    ] as $perm)
+                    @forelse($permissions as $index => $permission)
                     <tr>
-                        <td>{{ $perm[0] }}</td>
-                        <td>{{ $perm[1] }}</td>
-                        <td>{{ $perm[2] }}</td>
-                        <td><span class="badge bg-label-info">{{ $perm[3] }}</span></td>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $permission->permission_name }}</td>
+                        <td>{{ $permission->route }}</td>
                         <td>
-                            <div class="d-flex flex-wrap gap-1">
-                                @foreach($perm[4] as $role)
-                                    <span class="badge bg-label-warning">{{ $role }}</span>
-                                @endforeach
-                            </div>
+                            @if($permission->category)
+                                <span class="badge bg-label-info">{{ $permission->category->category_name }}</span>
+                            @else
+                                <span class="text-muted small">-</span>
+                            @endif
                         </td>
                         <td>
+                            @if($permission->show_in_menu)
+                                <span class="badge bg-label-success">Yes</span>
+                            @else
+                                <span class="badge bg-label-secondary">No</span>
+                            @endif
+                        </td>
+                        <td>
+                            @if(validatePermissions('admin/permissions/form/edit/{id}'))
                             <button class="btn btn-sm btn-icon btn-text-secondary btn-edit-perm"
-                                data-id="{{ $perm[0] }}"
-                                data-name="{{ $perm[1] }}"
-                                data-route="{{ $perm[2] }}"
-                                data-category="{{ $perm[3] }}">
+                                data-id="{{ encodeId($permission->id) }}">
                                 <i class="bx bx-edit-alt"></i>
                             </button>
-                            <a href="javascript:void(0);" class="btn btn-sm btn-icon btn-text-danger btn-delete-perm">
+                            @endif
+                            @if(validatePermissions('admin/permissions/delete/{id}'))
+                            <a href="javascript:void(0);" class="btn btn-sm btn-icon btn-text-danger btn-delete-perm"
+                                data-id="{{ encodeId($permission->id) }}">
                                 <i class="bx bx-trash"></i>
                             </a>
+                            @endif
                         </td>
                     </tr>
-                    @endforeach
+                    @empty
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-3">No permissions found.</td>
+                    </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

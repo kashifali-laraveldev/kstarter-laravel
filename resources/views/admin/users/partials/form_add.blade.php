@@ -13,33 +13,22 @@
     </div>
     <div class="col-md-6">
         <label class="form-label">Email Address</label>
-        <input type="email" class="form-control" name="email" placeholder="john@example.com">
+        <input type="email" class="form-control" name="email_address" placeholder="john@example.com">
     </div>
     <div class="col-md-6">
         <label class="form-label">Mobile Number</label>
-        <input type="text" class="form-control" name="mobile" placeholder="+1 202 555 0111">
+        <input type="text" class="form-control" name="mobile_number" placeholder="+1 202 555 0111">
     </div>
     <div class="col-md-6">
         <label class="form-label">Department</label>
-        <input type="text" class="form-control" name="department" placeholder="e.g. Engineering">
+        <input type="text" class="form-control" name="department_name" placeholder="e.g. Engineering">
     </div>
-    <div class="col-md-6">
-        <label class="form-label">User Role</label>
-        <select class="form-select" name="role" id="add_user_role">
-            <option value="">Select Role</option>
-            <option>Admin</option>
-            <option>Manager</option>
-            <option>Editor</option>
-            <option>Viewer</option>
-            <option>Moderator</option>
-            <option>Analyst</option>
-        </select>
-    </div>
-    <div class="col-md-6">
-        <label class="form-label">Status</label>
-        <select class="form-select" name="status" id="add_user_status">
-            <option>Active</option>
-            <option>Inactive</option>
+    <div class="col-12">
+        <label class="form-label">User Role(s)</label>
+        <select class="form-select" name="role_id[]" id="add_user_role" multiple>
+            @foreach($roles as $role)
+                <option value="{{ encodeId($role->id) }}">{{ $role->role_name }}</option>
+            @endforeach
         </select>
     </div>
     <div class="col-md-6">
