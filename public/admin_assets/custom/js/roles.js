@@ -1,15 +1,12 @@
 $(document).ready(function () {
+
     var table = $('#rolesTable').DataTable({
         pageLength: 10,
         paging: true,
         searching: true,
         ordering: true,
-        columnDefs: [{ orderable: false, targets: [3, 4, 6] }],
-        buttons: [{
-            extend: 'excel',
-            text: '',
-            exportOptions: { columns: [0,1,2,3,4,5] }
-        }],
+        columnDefs: [{ orderable: false, targets: [2, 3] }],
+        buttons: [{ extend: 'excel', text: '', exportOptions: { columns: [0, 1, 2] } }],
         language: {
             info: 'Showing _START_ to _END_ of _TOTAL_ roles',
             paginate: {
@@ -28,38 +25,26 @@ $(document).ready(function () {
         table.button(0).trigger();
     });
 
-    var pendingEditRole = null;
-
-    $(document).on('click', '.btn-edit-role', function () {
-        var btn = $(this);
-        pendingEditRole = {
-            name:        btn.data('name'),
-            description: btn.data('description'),
-        };
+    // ── Add Role ──────────────────────────────────────────────────────────────
+    $('#addRoleBtn').on('click', function () {
+        loadSpinnerSwal();
+        $.get('/admin/roles/form/add')
+            .done(function (res) {
+                hideSpinnerSwal();
+                $('#addRoleDrawerBody').html(res.html);
+                bootstrap.Offcanvas.getOrCreateInstance(document.getElementById('addRoleDrawer'), { backdrop: false, keyboard: false, scroll: true }).show();
+            })
+            .fail(function () {
+                hideSpinnerSwal();
+                errorSwal('Failed to load form. Please try again.');
+            });
     });
 
-    document.getElementById('editRoleDrawer').addEventListener('shown.bs.offcanvas', function () {
-        if (pendingEditRole) {
-            $('#edit_role_name').val(pendingEditRole.name);
-            $('#edit_role_description').val(pendingEditRole.description);
-            pendingEditRole = null;
-        }
-    });
-
+    // ── Delete Role ───────────────────────────────────────────────────────────
     $(document).on('click', '.btn-delete-role', function () {
-        Swal.fire({
-            title: 'Delete Role?',
-            text: 'This action cannot be undone.',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#ff3e1d',
-            cancelButtonColor: '#8592a3',
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'Cancel'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({ title: 'Deleted!', text: 'Role has been deleted.', icon: 'success', confirmButtonColor: '#696cff' });
-            }
+        warningSwal('This action cannot be undone.', 'Yes, delete it!').then(function (result) {
+            if (result.isConfirmed) { successSwal('Role has been deleted.'); }
         });
     });
+
 });

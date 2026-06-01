@@ -10,7 +10,7 @@
     .offcanvas-header { border-bottom: 1px solid #e7e7e9; padding: 1.25rem 1.5rem; }
     .offcanvas-footer { border-top: 1px solid #e7e7e9; padding: 1.25rem 1.5rem; }
     .offcanvas-body { padding: 1.5rem; }
-    .perm-check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem 1rem; }
+
 </style>
 @endsection
 
@@ -26,7 +26,7 @@
             </ol>
         </nav>
     </div>
-    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#addRoleDrawer">
+    <button class="btn btn-primary" type="button" id="addRoleBtn">
         <i class="bx bx-plus me-1"></i> Add Role
     </button>
 </div>
@@ -47,38 +47,37 @@
                     <tr>
                         <th>#</th>
                         <th>Role Name</th>
-                        <th>Description</th>
                         <th>Permissions</th>
-                        <th>Users</th>
-                        <th>Created</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody class="table-border-bottom-0">
                     @foreach([
-                        [1, 'Admin',     'Full system access',               42, 5,  '2024-01-01'],
-                        [2, 'Manager',   'Manage users and content',         28, 12, '2024-01-05'],
-                        [3, 'Editor',    'Create and edit content',          15, 8,  '2024-01-10'],
-                        [4, 'Moderator', 'Moderate user content',            10, 3,  '2024-01-15'],
-                        [5, 'Viewer',    'Read-only access',                  5, 25, '2024-02-01'],
-                        [6, 'Support',   'Handle support tickets',            8, 4,  '2024-02-10'],
-                        [7, 'Analyst',   'View reports and analytics',        6, 2,  '2024-03-01'],
+                        [1, 'Admin',     ['Create Users','Edit Users','Delete Users','View Users','Create Roles','Edit Roles','Delete Roles','View Reports','Manage Permissions','System Settings']],
+                        [2, 'Manager',   ['Create Users','Edit Users','View Users','View Reports','Manage Permissions']],
+                        [3, 'Editor',    ['Create Users','Edit Users','View Users']],
+                        [4, 'Moderator', ['View Users','View Reports']],
+                        [5, 'Viewer',    ['View Users']],
+                        [6, 'Support',   ['View Users','View Reports']],
+                        [7, 'Analyst',   ['View Reports','Export Report Data']],
                     ] as $role)
                     <tr>
                         <td>{{ $role[0] }}</td>
-                        <td><strong>{{ $role[1] }}</strong></td>
-                        <td>{{ $role[2] }}</td>
-                        <td><span class="badge bg-label-warning">{{ $role[3] }}</span></td>
-                        <td><span class="badge bg-label-info">{{ $role[4] }}</span></td>
-                        <td>{{ $role[5] }}</td>
+                        <td>{{ $role[1] }}</td>
                         <td>
-                            <button class="btn btn-sm btn-icon btn-text-secondary btn-edit-role"
-                                data-id="{{ $role[0] }}"
-                                data-name="{{ $role[1] }}"
-                                data-description="{{ $role[2] }}"
-                                data-bs-toggle="offcanvas" data-bs-target="#editRoleDrawer">
+                            <div class="d-flex flex-wrap align-items-center gap-1">
+                                @foreach(array_slice($role[2], 0, 3) as $perm)
+                                    <span class="badge bg-label-warning">{{ $perm }}</span>
+                                @endforeach
+                                @if(count($role[2]) > 3)
+                                    <span class="text-muted small">+{{ count($role[2]) - 3 }} more</span>
+                                @endif
+                            </div>
+                        </td>
+                        <td>
+                            <a href="{{ url('admin/roles/' . $role[0] . '/edit') }}" class="btn btn-sm btn-icon btn-text-secondary">
                                 <i class="bx bx-edit-alt"></i>
-                            </button>
+                            </a>
                             <a href="javascript:void(0);" class="btn btn-sm btn-icon btn-text-danger btn-delete-role">
                                 <i class="bx bx-trash"></i>
                             </a>
@@ -92,85 +91,23 @@
 </div>
 
 {{-- Add Role Offcanvas --}}
-<div class="offcanvas offcanvas-end" tabindex="-1" id="addRoleDrawer" aria-labelledby="addRoleDrawerLabel">
+<div class="offcanvas offcanvas-end" tabindex="-1" id="addRoleDrawer"
+     aria-labelledby="addRoleDrawerLabel">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="addRoleDrawerLabel">
             <i class="bx bx-shield-plus me-2 text-primary"></i> Add New Role
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
     </div>
-    <div class="offcanvas-body">
-        <form method="POST" onsubmit="return false">
-            <div class="row g-3">
-                <div class="col-12">
-                    <label class="form-label">Role Name</label>
-                    <input type="text" class="form-control" placeholder="e.g. Manager">
-                </div>
-                <div class="col-12">
-                    <label class="form-label">Description</label>
-                    <textarea class="form-control" rows="3" placeholder="Describe what this role can do..."></textarea>
-                </div>
-                <div class="col-12">
-                    <label class="form-label">Permissions</label>
-                    <div class="perm-check-grid mt-1">
-                        @foreach(['Create Users','Edit Users','Delete Users','View Users','Create Roles','Edit Roles','Delete Roles','View Reports','Manage Permissions','System Settings'] as $perm)
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="add_perm_{{ $loop->index }}">
-                            <label class="form-check-label" for="add_perm_{{ $loop->index }}">{{ $perm }}</label>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-    </div>
-    <div class="offcanvas-footer d-flex gap-2">
-        <button type="submit" class="btn btn-primary">
-            <i class="bx bx-check me-1"></i> Save Role
-        </button>
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
-        </form>
-    </div>
-</div>
-
-{{-- Edit Role Offcanvas --}}
-<div class="offcanvas offcanvas-end" tabindex="-1" id="editRoleDrawer" aria-labelledby="editRoleDrawerLabel">
-    <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="editRoleDrawerLabel">
-            <i class="bx bx-edit me-2 text-primary"></i> Edit Role
-        </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
-    </div>
-    <div class="offcanvas-body">
-        <form method="POST" onsubmit="return false" id="editRoleForm">
-            <div class="row g-3">
-                <div class="col-12">
-                    <label class="form-label">Role Name</label>
-                    <input type="text" class="form-control" id="edit_role_name" placeholder="e.g. Manager">
-                </div>
-                <div class="col-12">
-                    <label class="form-label">Description</label>
-                    <textarea class="form-control" id="edit_role_description" rows="3"></textarea>
-                </div>
-                <div class="col-12">
-                    <label class="form-label">Permissions</label>
-                    <div class="perm-check-grid mt-1">
-                        @foreach(['Create Users','Edit Users','Delete Users','View Users','Create Roles','Edit Roles','Delete Roles','View Reports','Manage Permissions','System Settings'] as $perm)
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="edit_perm_{{ $loop->index }}">
-                            <label class="form-check-label" for="edit_perm_{{ $loop->index }}">{{ $perm }}</label>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-    </div>
-    <div class="offcanvas-footer d-flex gap-2">
-        <button type="submit" class="btn btn-primary">
-            <i class="bx bx-check me-1"></i> Update Role
-        </button>
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
-        </form>
-    </div>
+    <form id="addRoleForm" onsubmit="return false">
+        <div class="offcanvas-body" id="addRoleDrawerBody"></div>
+        <div class="offcanvas-footer d-flex gap-2">
+            <button type="submit" class="btn btn-primary">
+                <i class="bx bx-check me-1"></i> Save Role
+            </button>
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
+        </div>
+    </form>
 </div>
 
 @endsection

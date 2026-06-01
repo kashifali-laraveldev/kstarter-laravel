@@ -19,4 +19,14 @@ class AdminUsersController extends Controller
     {
         return $this->adminUsersService->index($request);
     }
+
+    public function formAdd(Request $request)
+    {
+        return $this->adminUsersService->formAdd($request);
+    }
+
+    public function formEdit(Request $request, $id)
+    {
+        return $this->adminUsersService->formEdit($request, $id);
+    }
 }

@@ -12,8 +12,7 @@
                     <div>
                         <span class="fw-semibold d-block mb-1 text-muted">Total Users</span>
                         <h3 class="card-title mb-2">59</h3>
-                        <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +12%</small>
-                        <small class="text-muted"> vs last month</small>
+                        <small class="text-muted">Registered in the system</small>
                     </div>
                     <div class="avatar flex-shrink-0">
                         <span class="avatar-initial rounded bg-label-primary p-3">
@@ -32,8 +31,7 @@
                     <div>
                         <span class="fw-semibold d-block mb-1 text-muted">Total Roles</span>
                         <h3 class="card-title mb-2">7</h3>
-                        <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +2</small>
-                        <small class="text-muted"> new this month</small>
+                        <small class="text-muted">Access control levels</small>
                     </div>
                     <div class="avatar flex-shrink-0">
                         <span class="avatar-initial rounded bg-label-warning p-3">
@@ -52,7 +50,7 @@
                     <div>
                         <span class="fw-semibold d-block mb-1 text-muted">Permissions</span>
                         <h3 class="card-title mb-2">42</h3>
-                        <small class="text-info fw-semibold"><i class="bx bx-right-arrow-alt"></i> 6 categories</small>
+                        <small class="text-muted">Across all categories</small>
                     </div>
                     <div class="avatar flex-shrink-0">
                         <span class="avatar-initial rounded bg-label-info p-3">
@@ -71,8 +69,7 @@
                     <div>
                         <span class="fw-semibold d-block mb-1 text-muted">Categories</span>
                         <h3 class="card-title mb-2">6</h3>
-                        <small class="text-danger fw-semibold"><i class="bx bx-down-arrow-alt"></i> -1</small>
-                        <small class="text-muted"> vs last month</small>
+                        <small class="text-muted">Permission groups</small>
                     </div>
                     <div class="avatar flex-shrink-0">
                         <span class="avatar-initial rounded bg-label-danger p-3">
@@ -86,8 +83,8 @@
 </div>
 
 <div class="row">
-    <div class="col-md-8 mb-4">
-        <div class="card h-100">
+    <div class="col-12 mb-4">
+        <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h5 class="m-0">Recent Users</h5>
                 <a href="{{ route('admin.users') }}" class="btn btn-sm btn-outline-primary">View All</a>
@@ -114,7 +111,8 @@
                         <tr>
                             <td>
                                 <div class="d-flex align-items-center gap-2">
-                                    <span class="avatar avatar-sm avatar-initial rounded-circle bg-label-primary">{{ strtoupper(substr($user[0],0,1)) }}</span>
+                                    <img src="{{ asset('admin_assets/img/avatars/' . [1,5,6,7][$loop->index % 4] . '.png') }}"
+                                        class="rounded-circle" style="width:32px;height:32px;object-fit:cover;" alt="{{ $user[0] }}">
                                     <strong>{{ $user[0] }}</strong>
                                 </div>
                             </td>
@@ -126,35 +124,6 @@
                         @endforeach
                     </tbody>
                 </table>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-4 mb-4">
-        <div class="card h-100">
-            <div class="card-header">
-                <h5 class="m-0">Role Distribution</h5>
-            </div>
-            <div class="card-body">
-                @foreach([
-                    ['Admin', 5, 'primary', 8],
-                    ['Manager', 12, 'warning', 20],
-                    ['Editor', 8, 'info', 14],
-                    ['Moderator', 3, 'danger', 5],
-                    ['Viewer', 25, 'success', 42],
-                    ['Support', 4, 'secondary', 7],
-                    ['Analyst', 2, 'dark', 3],
-                ] as $role)
-                <div class="mb-3">
-                    <div class="d-flex justify-content-between mb-1">
-                        <span class="fw-semibold">{{ $role[0] }}</span>
-                        <span class="text-muted small">{{ $role[1] }} users ({{ $role[3] }}%)</span>
-                    </div>
-                    <div class="progress" style="height:6px;">
-                        <div class="progress-bar bg-{{ $role[2] }}" role="progressbar" style="width:{{ $role[3] }}%"></div>
-                    </div>
-                </div>
-                @endforeach
             </div>
         </div>
     </div>

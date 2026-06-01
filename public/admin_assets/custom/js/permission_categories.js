@@ -1,4 +1,5 @@
 $(document).ready(function () {
+
     var table = $('#categoriesTable').DataTable({
         pageLength: 10,
         paging: true,
@@ -28,14 +29,12 @@ $(document).ready(function () {
         table.button(0).trigger();
     });
 
-    // Inline editable display order — integers only
+    // ── Inline editable display order ─────────────────────────────────────────
     $(document).on('keypress', '.order-input', function (e) {
-        // Allow only digit keys (0-9)
         if (!/^\d$/.test(e.key)) e.preventDefault();
     });
 
     $(document).on('input', '.order-input', function () {
-        // Strip any non-digit characters (handles paste)
         this.value = this.value.replace(/\D/g, '');
     });
 
@@ -51,38 +50,55 @@ $(document).ready(function () {
         if (e.key === 'Enter') $(this).blur();
     });
 
-    // Edit drawer
-    var pendingEditCat = null;
+    // ── Live icon preview (delegated — works after AJAX inject) ───────────────
+    $(document).on('input', '#edit_cat_icon', function () {
+        var cls = $(this).val().trim() || 'bx bx-category';
+        $('#edit_cat_icon_preview i').attr('class', cls);
+    });
 
+    // ── Add Category ──────────────────────────────────────────────────────────
+    $('#addCategoryBtn').on('click', function () {
+        loadSpinnerSwal();
+        $.get('/admin/permission-categories/form/add')
+            .done(function (res) {
+                hideSpinnerSwal();
+                $('#addCategoryDrawerBody').html(res.html);
+                bootstrap.Offcanvas.getOrCreateInstance(document.getElementById('addCategoryDrawer'), { backdrop: false, keyboard: false, scroll: true }).show();
+            })
+            .fail(function () {
+                hideSpinnerSwal();
+                errorSwal('Failed to load form. Please try again.');
+            });
+    });
+
+    // ── Edit Category ─────────────────────────────────────────────────────────
     $(document).on('click', '.btn-edit-cat', function () {
-        var btn = $(this);
-        pendingEditCat = {
+        var btn  = $(this);
+        var data = {
             name: btn.data('name'),
+            icon: btn.data('icon'),
         };
+        loadSpinnerSwal();
+        $.get('/admin/permission-categories/form/edit/' + btn.data('id'))
+            .done(function (res) {
+                hideSpinnerSwal();
+                $('#editCategoryDrawerBody').html(res.html);
+                $('#edit_cat_name').val(data.name);
+                $('#edit_cat_icon').val(data.icon);
+                $('#edit_cat_icon_preview i').attr('class', data.icon || 'bx bx-category');
+                bootstrap.Offcanvas.getOrCreateInstance(document.getElementById('editCategoryDrawer'), { backdrop: false, keyboard: false, scroll: true }).show();
+            })
+            .fail(function () {
+                hideSpinnerSwal();
+                errorSwal('Failed to load form. Please try again.');
+            });
     });
 
-    document.getElementById('editCategoryDrawer').addEventListener('shown.bs.offcanvas', function () {
-        if (pendingEditCat) {
-            $('#edit_cat_name').val(pendingEditCat.name);
-            pendingEditCat = null;
-        }
-    });
-
-    // Delete
+    // ── Delete Category ───────────────────────────────────────────────────────
     $(document).on('click', '.btn-delete-cat', function () {
-        Swal.fire({
-            title: 'Delete Category?',
-            text: 'This action cannot be undone.',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#ff3e1d',
-            cancelButtonColor: '#8592a3',
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'Cancel'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({ title: 'Deleted!', text: 'Category has been deleted.', icon: 'success', confirmButtonColor: '#696cff' });
-            }
+        warningSwal('This action cannot be undone.', 'Yes, delete it!').then(function (result) {
+            if (result.isConfirmed) { successSwal('Category has been deleted.'); }
         });
     });
+
 });

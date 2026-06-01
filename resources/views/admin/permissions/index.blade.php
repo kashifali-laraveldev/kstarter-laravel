@@ -25,7 +25,7 @@
             </ol>
         </nav>
     </div>
-    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#addPermissionDrawer">
+    <button class="btn btn-primary" type="button" id="addPermissionBtn">
         <i class="bx bx-plus me-1"></i> Add Permission
     </button>
 </div>
@@ -68,7 +68,7 @@
                     <tr>
                         <td>{{ $perm[0] }}</td>
                         <td>{{ $perm[1] }}</td>
-                        <td><small class="text-muted"><i class="bx bx-link me-1"></i>{{ $perm[2] }}</small></td>
+                        <td>{{ $perm[2] }}</td>
                         <td><span class="badge bg-label-info">{{ $perm[3] }}</span></td>
                         <td>
                             <div class="d-flex flex-wrap gap-1">
@@ -82,8 +82,7 @@
                                 data-id="{{ $perm[0] }}"
                                 data-name="{{ $perm[1] }}"
                                 data-route="{{ $perm[2] }}"
-                                data-category="{{ $perm[3] }}"
-                                data-bs-toggle="offcanvas" data-bs-target="#editPermissionDrawer">
+                                data-category="{{ $perm[3] }}">
                                 <i class="bx bx-edit-alt"></i>
                             </button>
                             <a href="javascript:void(0);" class="btn btn-sm btn-icon btn-text-danger btn-delete-perm">
@@ -99,103 +98,43 @@
 </div>
 
 {{-- Add Permission Offcanvas --}}
-<div class="offcanvas offcanvas-end" tabindex="-1" id="addPermissionDrawer" aria-labelledby="addPermissionDrawerLabel">
+<div class="offcanvas offcanvas-end" tabindex="-1" id="addPermissionDrawer"
+     aria-labelledby="addPermissionDrawerLabel">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="addPermissionDrawerLabel">
             <i class="bx bx-lock-open-alt me-2 text-primary"></i> Add New Permission
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
     </div>
-    <div class="offcanvas-body">
-        <form method="POST" onsubmit="return false">
-            <div class="row g-3">
-                <div class="col-12">
-                    <label class="form-label">Permission Category</label>
-                    <select class="form-select" id="add_perm_category">
-                        <option value="">Select Category</option>
-                        <option>User Management</option>
-                        <option>Role Management</option>
-                        <option>Permission Management</option>
-                        <option>Reports</option>
-                        <option>Settings</option>
-                    </select>
-                </div>
-                <div class="col-12">
-                    <label class="form-label">Permission Name</label>
-                    <input type="text" class="form-control" placeholder="e.g. All Users Listing">
-                </div>
-                <div class="col-12">
-                    <label class="form-label">Route</label>
-                    <div class="input-group">
-                        <span class="input-group-text text-muted"><i class="bx bx-link"></i></span>
-                        <input type="text" class="form-control" placeholder="e.g. admin/users">
-                    </div>
-                </div>
-                <div class="col-12">
-                    <div class="form-check form-switch mt-1">
-                        <input class="form-check-input" type="checkbox" id="add_perm_show_in_menu">
-                        <label class="form-check-label" for="add_perm_show_in_menu">Show in Menu</label>
-                    </div>
-                </div>
-            </div>
-    </div>
-    <div class="offcanvas-footer d-flex gap-2">
-        <button type="submit" class="btn btn-primary">
-            <i class="bx bx-check me-1"></i> Save Permission
-        </button>
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
-        </form>
-    </div>
+    <form id="addPermissionForm" onsubmit="return false">
+        <div class="offcanvas-body" id="addPermissionDrawerBody"></div>
+        <div class="offcanvas-footer d-flex gap-2">
+            <button type="submit" class="btn btn-primary">
+                <i class="bx bx-check me-1"></i> Save Permission
+            </button>
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
+        </div>
+    </form>
 </div>
 
 {{-- Edit Permission Offcanvas --}}
-<div class="offcanvas offcanvas-end" tabindex="-1" id="editPermissionDrawer" aria-labelledby="editPermissionDrawerLabel">
+<div class="offcanvas offcanvas-end" tabindex="-1" id="editPermissionDrawer"
+     aria-labelledby="editPermissionDrawerLabel">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="editPermissionDrawerLabel">
             <i class="bx bx-edit me-2 text-primary"></i> Edit Permission
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
     </div>
-    <div class="offcanvas-body">
-        <form method="POST" onsubmit="return false" id="editPermissionForm">
-            <div class="row g-3">
-                <div class="col-12">
-                    <label class="form-label">Permission Category</label>
-                    <select class="form-select" id="edit_perm_category">
-                        <option value="">Select Category</option>
-                        <option>User Management</option>
-                        <option>Role Management</option>
-                        <option>Permission Management</option>
-                        <option>Reports</option>
-                        <option>Settings</option>
-                    </select>
-                </div>
-                <div class="col-12">
-                    <label class="form-label">Permission Name</label>
-                    <input type="text" class="form-control" id="edit_perm_name" placeholder="e.g. All Users Listing">
-                </div>
-                <div class="col-12">
-                    <label class="form-label">Route</label>
-                    <div class="input-group">
-                        <span class="input-group-text text-muted"><i class="bx bx-link"></i></span>
-                        <input type="text" class="form-control" id="edit_perm_route" placeholder="e.g. admin/users">
-                    </div>
-                </div>
-                <div class="col-12">
-                    <div class="form-check form-switch mt-1">
-                        <input class="form-check-input" type="checkbox" id="edit_perm_show_in_menu">
-                        <label class="form-check-label" for="edit_perm_show_in_menu">Show in Menu</label>
-                    </div>
-                </div>
-            </div>
-    </div>
-    <div class="offcanvas-footer d-flex gap-2">
-        <button type="submit" class="btn btn-primary">
-            <i class="bx bx-check me-1"></i> Update Permission
-        </button>
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
-        </form>
-    </div>
+    <form id="editPermissionForm" onsubmit="return false">
+        <div class="offcanvas-body" id="editPermissionDrawerBody"></div>
+        <div class="offcanvas-footer d-flex gap-2">
+            <button type="submit" class="btn btn-primary">
+                <i class="bx bx-check me-1"></i> Update Permission
+            </button>
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
+        </div>
+    </form>
 </div>
 
 @endsection

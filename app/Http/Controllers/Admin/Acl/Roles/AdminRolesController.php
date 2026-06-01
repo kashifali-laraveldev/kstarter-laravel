@@ -24,4 +24,14 @@ class AdminRolesController extends Controller
     {
         return $this->adminRolesService->create($request);
     }
+
+    public function edit(Request $request, $id)
+    {
+        return $this->adminRolesService->edit($request, $id);
+    }
+
+    public function formAdd(Request $request)
+    {
+        return $this->adminRolesService->formAdd($request);
+    }
 }

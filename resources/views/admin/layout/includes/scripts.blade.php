@@ -28,4 +28,19 @@
 {{-- KStarter JS --}}
 <script src="{{ asset('admin_assets') }}/custom/js/admin_master.js?v={{ time() }}"></script>
 
+@if(Session::has('flash_success_message'))
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        successSwal(@json(Session::get('flash_success_message')));
+    });
+</script>
+@endif
+@if(Session::has('flash_error_message'))
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        errorSwal(@json(Session::get('flash_error_message')));
+    });
+</script>
+@endif
+
 @yield('script')

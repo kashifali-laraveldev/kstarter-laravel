@@ -24,4 +24,14 @@ class AdminPermissionCategoriesController extends Controller
     {
         return $this->adminPermissionCategoriesService->create($request);
     }
+
+    public function formAdd(Request $request)
+    {
+        return $this->adminPermissionCategoriesService->formAdd($request);
+    }
+
+    public function formEdit(Request $request, $id)
+    {
+        return $this->adminPermissionCategoriesService->formEdit($request, $id);
+    }
 }
