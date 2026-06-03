@@ -15,6 +15,12 @@
   <img src="https://img.shields.io/badge/License-MIT-green" alt="MIT License" />
 </p>
 
+<p align="center">
+  <a href="https://kashifali.kitsoftsol.com" target="_blank">
+    <img src="https://img.shields.io/badge/🚀%20Live%20Demo-View%20Now-6366f1?style=for-the-badge" alt="Live Demo" />
+  </a>
+</p>
+
 ---
 
 ## Preview
@@ -68,9 +74,9 @@
 
 | Feature | Description |
 |---|---|
-| **Custom Authentication** | Guard-based admin login with remember me, session management, and middleware protection - no Breeze or Jetstream |
+| **Custom Authentication** | Guard-based admin login with remember me, session management, and middleware protection — no Breeze or Jetstream |
 | **Role & Permission (RBAC)** | Fully custom-built role-based access control with route-level permission checks, permission categories, and multiple roles per user |
-| **User Management** | Complete CRUD with multiple role assignments, status toggling, profile management - all via AJAX offcanvas drawers |
+| **User Management** | Complete CRUD with multiple role assignments, status toggling, profile management — all via AJAX offcanvas drawers |
 | **Admin Panel** | Sneat Bootstrap 5 theme with DataTables, Excel export, Select2, SweetAlert2, and a responsive sidebar |
 | **Clean Architecture** | Structured `Controller → Service → Library` pattern for separation of concerns and scalability |
 | **Modern Stack** | Laravel 11, PHP 8.2+, Bootstrap 5, jQuery, Vite, and modern PHP best practices |
@@ -145,7 +151,7 @@ Then visit `http://localhost:8000` for the landing page or `http://localhost:800
 ```
 app/
 ├── Http/
-│   └── Controllers/Admin/    # Thin controllers - delegate to services
+│   └── Controllers/Admin/    # Thin controllers — delegate to services
 ├── Services/Admin/           # Business logic layer
 ├── Libraries/Admin/          # View data preparation and form handling
 ├── Models/                   # Eloquent models
@@ -172,10 +178,10 @@ Request → Controller → Service → Library → View
                   Model / DB
 ```
 
-- **Controller** - receives HTTP request, calls service, returns response
-- **Service** - orchestrates business logic, calls libraries and models
-- **Library** - prepares view data, handles form logic
-- **Validation** - dedicated classes per action (Store, Update)
+- **Controller** — receives HTTP request, calls service, returns response
+- **Service** — orchestrates business logic, calls libraries and models
+- **Library** — prepares view data, handles form logic
+- **Validation** — dedicated classes per action (Store, Update)
 
 ---
 
@@ -185,7 +191,7 @@ Request → Controller → Service → Library → View
 # Seed all data (users, roles, permissions, permission categories)
 php artisan db:seed
 
-# Re-seed permissions (safe to run multiple times - uses updateOrCreate)
+# Re-seed permissions (safe to run multiple times — uses updateOrCreate)
 php artisan db:seed --class=PermissionsSeeder
 ```
 
@@ -203,7 +209,7 @@ php artisan db:seed --class=PermissionsSeeder
 
 ## Security
 
-KStarter implements a custom **XSS (Cross-Site Scripting) middleware** that automatically protects every incoming request from malicious input - no manual sanitization needed in controllers or services.
+KStarter implements a custom **XSS (Cross-Site Scripting) middleware** that automatically protects every incoming request from malicious input — no manual sanitization needed in controllers or services.
 
 ### What is XSS?
 
@@ -251,7 +257,7 @@ Sensitive fields are **never** sanitized to avoid breaking authentication:
 
 ```php
 private const SKIP_KEYS = [
-    '_token',           // CSRF token - altering breaks form submission
+    '_token',           // CSRF token — altering breaks form submission
     'password',         // Hashing must work on raw input
     'current_password',
     'new_password',
@@ -276,7 +282,7 @@ In addition to input sanitization, the middleware attaches hardened HTTP headers
 
 If KStarter saved you time, consider a small donation to help keep it free and actively maintained.
 
-**Meezan Bank - Pakistan**
+**Meezan Bank — Pakistan**
 `PK31MEZN0002760105244525`
 
 ---
