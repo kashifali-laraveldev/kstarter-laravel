@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="favicon/favicon.svg" width="72" alt="KStarter Laravel" />
+  <img src="screenshots/logo.png" width="72" alt="KStarter Laravel" />
 </p>
 
 <h1 align="center">KStarter Laravel</h1>
