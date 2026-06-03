@@ -201,6 +201,77 @@ php artisan db:seed --class=PermissionsSeeder
 
 ---
 
+## Security
+
+KStarter implements a custom **XSS (Cross-Site Scripting) middleware** that automatically protects every incoming request from malicious input - no manual sanitization needed in controllers or services.
+
+### What is XSS?
+
+XSS is a common web attack where a hacker injects malicious scripts (like `<script>alert('hacked')</script>`) into input fields. If the application saves and renders this input unsanitized, it can steal user sessions, redirect users, or deface the UI.
+
+### How KStarter Blocks It
+
+The `App\Http\Middleware\XSS` middleware runs on every admin request and cleans all input automatically:
+
+```
+Incoming Request
+       │
+       ▼
+ Skip sensitive keys (_token, password fields)
+       │
+       ▼
+ Sanitize remaining input recursively
+       │
+  ┌────┴────────────────────────────────────────┐
+  │  Remove <script> blocks & their content     │
+  │  Strip inline event handlers (onclick, etc) │
+  │  Neutralise javascript: / vbscript: URIs    │
+  │  Strip all remaining HTML/XML tags          │
+  └────┬────────────────────────────────────────┘
+       │
+       ▼
+ Pass clean input to Controller
+       │
+       ▼
+ Attach Security Headers to Response
+```
+
+### What Gets Sanitized
+
+| Threat | Example Attack | How It's Blocked |
+|---|---|---|
+| Script injection | `<script>stealCookies()</script>` | `<script>` blocks removed entirely |
+| Inline event handlers | `<img onmouseover="hack()">` | `on*=` attributes stripped |
+| JavaScript URI | `<a href="javascript:void(0)">` | `javascript:` scheme neutralised |
+| HTML tag injection | `<b onclick="...">text</b>` | All HTML/XML tags stripped |
+
+### Smart Key Skipping
+
+Sensitive fields are **never** sanitized to avoid breaking authentication:
+
+```php
+private const SKIP_KEYS = [
+    '_token',           // CSRF token - altering breaks form submission
+    'password',         // Hashing must work on raw input
+    'current_password',
+    'new_password',
+    'new_password_confirmation',
+];
+```
+
+### Security Headers
+
+In addition to input sanitization, the middleware attaches hardened HTTP headers to **every admin response**:
+
+| Header | Value | Purpose |
+|---|---|---|
+| `X-XSS-Protection` | `1; mode=block` | Tells older browsers to block XSS attacks |
+| `X-Content-Type-Options` | `nosniff` | Prevents MIME-type sniffing attacks |
+| `X-Frame-Options` | `SAMEORIGIN` | Blocks clickjacking via iframes |
+| `Referrer-Policy` | `strict-origin-when-cross-origin` | Controls referrer info leakage |
+
+---
+
 ## Support the Project
 
 If KStarter saved you time, consider a small donation to help keep it free and actively maintained.
