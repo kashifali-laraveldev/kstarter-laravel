@@ -20,11 +20,11 @@
             </p>
 
             <div class="hero-buttons">
-                <a href="#features" class="btn-primary-hero">
+                <a href="https://kstarter-laravel.kitsoftsol.com" target="_blank" class="btn-primary-hero">
                     <i class="bi bi-grid-1x2"></i>
                     Explore Features
                 </a>
-                <a href="{{ route('admin.login.view') }}" class="btn-outline-hero">
+                <a href="https://kstarter-laravel.kitsoftsol.com/admin/login" target="_blank" class="btn-outline-hero">
                     <i class="bi bi-speedometer2"></i>
                     Live Demo
                 </a>
@@ -107,6 +107,10 @@
                         <div class="feature-item-dark">
                             <i class="bi bi-check-circle-fill"></i>
                             Clean Architecture
+                        </div>
+                        <div class="feature-item-dark">
+                            <i class="bi bi-check-circle-fill"></i>
+                            XSS &amp; Security Headers
                         </div>
                         <div class="feature-item-dark">
                             <i class="bi bi-check-circle-fill"></i>

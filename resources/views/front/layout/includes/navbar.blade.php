@@ -10,7 +10,7 @@
 
         <!-- Nav Links -->
         <ul class="kstarter-nav-links">
-            <li><a href="{{ route('front.home') }}" class="active">Home</a></li>
+            <li><a href="#hero" class="active">Home</a></li>
             <li><a href="#features">Features</a></li>
             <li><a href="#support">Support</a></li>
         </ul>

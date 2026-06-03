@@ -24,16 +24,6 @@
 
         <div class="stat-item">
             <div class="stat-icon-wrap">
-                <i class="bi bi-cloud-download-fill"></i>
-            </div>
-            <div>
-                <div class="stat-label">10K+</div>
-                <p class="stat-desc">Downloads and growing every day.</p>
-            </div>
-        </div>
-
-        <div class="stat-item">
-            <div class="stat-icon-wrap">
                 <i class="bi bi-star-fill"></i>
             </div>
             <div>
