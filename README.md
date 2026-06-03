@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="public/front_assets/images/favicon/favicon.svg" width="72" alt="KStarter Laravel" />
+  <img src="favicon/favicon.svg" width="72" alt="KStarter Laravel" />
 </p>
 
 <h1 align="center">KStarter Laravel</h1>
@@ -21,7 +21,7 @@
 ## Preview
 
 <p align="center">
-  <img src="public/front_assets/images/screenshots/kstarter_laravel.png" alt="KStarter Laravel Banner" width="100%" />
+  <img src="screenshots/kstarter_laravel.png" alt="KStarter Laravel Banner" width="100%" />
 </p>
 
 ---
@@ -30,37 +30,37 @@
 
 ### Login Page
 <p align="center">
-  <img src="public/front_assets/images/screenshots/login_page.png" alt="Login Page" width="100%" />
+  <img src="screenshots/login_page.png" alt="Login Page" width="100%" />
 </p>
 
 ### Dashboard
 <p align="center">
-  <img src="public/front_assets/images/screenshots/dashboard_page.png" alt="Dashboard" width="100%" />
+  <img src="screenshots/dashboard_page.png" alt="Dashboard" width="100%" />
 </p>
 
 ### Users Management
 <p align="center">
-  <img src="public/front_assets/images/screenshots/users.png" alt="Users Management" width="100%" />
+  <img src="screenshots/users.png" alt="Users Management" width="100%" />
 </p>
 
 ### Roles Management
 <p align="center">
-  <img src="public/front_assets/images/screenshots/roles_page.png" alt="Roles Management" width="100%" />
+  <img src="screenshots/roles_page.png" alt="Roles Management" width="100%" />
 </p>
 
 ### Permissions Management
 <p align="center">
-  <img src="public/front_assets/images/screenshots/permissions_page.png" alt="Permissions Management" width="100%" />
+  <img src="screenshots/permissions_page.png" alt="Permissions Management" width="100%" />
 </p>
 
 ### Permission Categories
 <p align="center">
-  <img src="public/front_assets/images/screenshots/permission_categories_page.png" alt="Permission Categories" width="100%" />
+  <img src="screenshots/permission_categories_page.png" alt="Permission Categories" width="100%" />
 </p>
 
 ### Profile Page
 <p align="center">
-  <img src="public/front_assets/images/screenshots/profile.png" alt="Profile Page" width="100%" />
+  <img src="screenshots/profile.png" alt="Profile Page" width="100%" />
 </p>
 
 ---
