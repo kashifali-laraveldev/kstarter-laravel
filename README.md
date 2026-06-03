@@ -1,8 +1,7 @@
 <p align="center">
-  <img src="screenshots/logo.png" width="72" alt="KStarter Laravel" />
+  <img src="screenshots/logo.png" width="250" alt="KStarter Laravel" />
 </p>
 
-<h1 align="center">KStarter Laravel</h1>
 
 <p align="center">
   A modern, production-ready Laravel 11 admin starter kit with custom authentication,<br>
